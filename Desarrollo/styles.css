@@ -1,0 +1,135 @@
+/* =========================================
+   1. VARIABLES Y REGLAS GENERALES
+========================================= */
+:root {
+    --bg-color: #f4f6f9;
+    --card-bg: #ffffff;
+    --text-color: #2c3e50;
+    --primary-color: #3498db;
+    --primary-hover: #2980b9;
+    --border-radius: 12px;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================
+   2. ENCABEZADO Y PIE DE PÁGINA
+========================================= */
+header {
+    text-align: center;
+    padding: 2rem 1rem 1rem;
+}
+
+header h1 {
+    font-size: 2.2rem;
+    margin-bottom: 0.5rem;
+}
+
+footer {
+    text-align: center;
+    padding: 1.5rem;
+    margin-top: auto;
+    background-color: #e2e8f0;
+}
+
+/* =========================================
+   3. PANEL DE CONTROLES (ACCESIBILIDAD)
+========================================= */
+.controles {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin: 1.5rem auto;
+    padding: 0 1rem;
+}
+
+label {
+    font-weight: 600;
+}
+
+select, button {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #cbd5e1;
+    outline: none;
+    transition: all 0.2s ease;
+}
+
+/* Accesibilidad: Foco visible para navegación por teclado */
+select:focus, button:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.4);
+}
+
+button {
+    background-color: var(--primary-color);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+}
+
+button:hover {
+    background-color: var(--primary-hover);
+}
+
+/* =========================================
+   4. GRILLA DE COLORES (GRID RESPONSIVO)
+========================================= */
+.paleta {
+    display: grid;
+    /* Se adapta automáticamente al tamaño de la pantalla */
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    max-width: 1100px;
+    width: 90%;
+    margin: 2rem auto;
+}
+
+/* Tarjeta individual de color */
+.tarjeta-color {
+    background-color: var(--card-bg);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta-color:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Muestra visual del color */
+.muestra-color {
+    width: 100%;
+    height: 150px;
+}
+
+/* Texto del código HEX */
+.codigo-color {
+    padding: 1rem;
+    font-family: monospace;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #334155;
+}
