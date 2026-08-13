@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProyectoM1_SandyHurtado</title>
+    <link rel="styLesheet" href="./styles.css">
+</head>
+<body>
+<header>
+    <h1>Creación de Paleta de Colores</h1>
+    <p>Seleciona y crea tu Combinación de Colores</p> 
+</header>
+  <main> 
+    <section class="controles">
+        <label for="tamano-paleta">Cantidad de colores:</label>
+            <select id="tamano-paleta">
+                <option value="6">6 Colores</option>
+                <option value="8">8 Colores</option>
+                <option value="9">9 Colores</option>
+            </select>
+
+            <button id="btn-generar">Generar paleta</button>
+        </section>
+
+        <!-- Contenedor donde JavaScript inyectará los colores dinámicamente -->
+        <section id="contenedor-paleta" class="paleta" aria-live="polite">
+            <!-- Los colores aparecerán aquí -->
+        </section>
+    </main>
+
+    <footer>
+        <small>&copy; 2026 - Proyecto Integrador M1 | Desarrollado por Sandy</small>
+    </footer>
+
+    <!-- Vinculación del script al final del body -->
+    <script src="./js/app.js"></script>
+
+    </section>
+  </main>
+
+</body>
+</html>
