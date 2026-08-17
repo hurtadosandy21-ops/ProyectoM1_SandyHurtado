@@ -1,14 +1,22 @@
 // 1. Selección de elementos del DOM
 const select = document.getElementById('tamano-paleta');
-const btn = document.getElementById('btn-generar');
+const btnGenerar = document.getElementById('btn-generar');
+const btnGuardarActual = document.getElementById('btn-guardar-actual');
 const container = document.getElementById('contenedor-paleta');
+
+// Elementos del menú desplegable único
+const savedBtn = document.getElementById('saved-dropdown-btn');
+const savedDropdown = document.getElementById('saved-palettes-dropdown');
+const savedCount = document.getElementById('saved-count');
+
+let savedPalettes = [];
 
 // 2. Función para generar un color HEX aleatorio
 function randomHex() {
     return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
 }
 
-// 3. Crear cada tarjeta (con botón de candado)
+// 3. Crear cada tarjeta con botón de candado
 function crearTarjeta(color, estaBloqueado = false) {
     const article = document.createElement('article');
     article.className = `tarjeta-color ${estaBloqueado ? 'bloqueada' : ''}`;
@@ -21,13 +29,11 @@ function crearTarjeta(color, estaBloqueado = false) {
     label.className = 'codigo-color';
     label.textContent = color;
 
-    // Crear el botón de candado
     const btnCandado = document.createElement('button');
     btnCandado.className = 'btn-candado';
     btnCandado.textContent = estaBloqueado ? '🔒' : '🔓';
     btnCandado.title = estaBloqueado ? 'Desbloquear color' : 'Bloquear color';
 
-    // Evento para bloquear / desbloquear la tarjeta al hacer clic en el candado
     btnCandado.addEventListener('click', () => {
         article.classList.toggle('bloqueada');
         const bloqueadoAhora = article.classList.contains('bloqueada');
@@ -42,30 +48,115 @@ function crearTarjeta(color, estaBloqueado = false) {
     return article;
 }
 
-// 4. Generar la paleta respetando las tarjetas bloqueadas
+// 4. Generar la paleta en pantalla
 function generar() {
     const count = parseInt(select.value, 10) || 6;
     const tarjetasActuales = Array.from(container.children);
 
-    // Limpiamos el contenedor para redibujar
     container.innerHTML = '';
 
     for (let i = 0; i < count; i++) {
         const tarjetaPrevia = tarjetasActuales[i];
 
-        // Si la tarjeta anterior existía y está bloqueada, conservamos su color
         if (tarjetaPrevia && tarjetaPrevia.classList.contains('bloqueada')) {
             const colorExistente = tarjetaPrevia.querySelector('.codigo-color').textContent;
             container.appendChild(crearTarjeta(colorExistente, true));
         } else {
-            // Si no está bloqueada, generamos un color nuevo
             container.appendChild(crearTarjeta(randomHex(), false));
         }
     }
 }
 
-// 5. Escuchar clic del botón
-btn.addEventListener('click', generar);
+// 5. Gestión del menú desplegable único
+savedBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    savedDropdown.classList.toggle('hidden');
+});
 
-// 6. Carga automática inicial
+// Cerrar si se da clic fuera
+document.addEventListener('click', (e) => {
+    if (!savedDropdown.contains(e.target) && e.target !== savedBtn) {
+        savedDropdown.classList.add('hidden');
+    }
+});
+
+// Guardar la paleta visible actualmente
+function guardarPaletaActual() {
+    const tarjetas = Array.from(container.querySelectorAll('.codigo-color'));
+    if (tarjetas.length === 0) return;
+
+    const nuevaPaleta = tarjetas.map(label => label.textContent);
+    savedPalettes.push(nuevaPaleta);
+    renderSavedPalettes();
+}
+
+// Cargar paleta seleccionada de la lista
+function cargarPaleta(colors) {
+    container.innerHTML = '';
+    select.value = colors.length;
+
+    colors.forEach(color => {
+        container.appendChild(crearTarjeta(color, false));
+    });
+
+    savedDropdown.classList.add('hidden');
+}
+
+// Eliminar paleta de la lista
+function deletePalette(index) {
+    savedPalettes.splice(index, 1);
+    renderSavedPalettes();
+}
+
+// Renderizar la lista desplegable de paletas
+function renderSavedPalettes() {
+    savedDropdown.innerHTML = '';
+    
+    // Actualizar el número en la etiqueta principal del botón
+    savedCount.textContent = `(${savedPalettes.length})`;
+
+    if (savedPalettes.length === 0) {
+        savedDropdown.innerHTML = '<div style="padding:10px; font-size:13px; color:#888;">Sin paletas guardadas</div>';
+        return;
+    }
+
+    savedPalettes.forEach((palette, index) => {
+        const option = document.createElement('div');
+        option.classList.add('palette-option');
+
+        // Vista previa de los colores
+        const preview = document.createElement('div');
+        preview.classList.add('mini-colors-preview');
+
+        palette.forEach(color => {
+            const dot = document.createElement('div');
+            dot.classList.add('mini-color-dot');
+            dot.style.backgroundColor = color;
+            preview.appendChild(dot);
+        });
+
+        // Al hacer clic en los colores se carga en pantalla
+        preview.addEventListener('click', () => cargarPaleta(palette));
+
+        // Botón pequeño para eliminar
+        const deleteBtn = document.createElement('button');
+        deleteBtn.classList.add('delete-option-btn');
+        deleteBtn.innerHTML = '✕';
+        deleteBtn.title = 'Eliminar';
+        deleteBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            deletePalette(index);
+        });
+
+        option.appendChild(preview);
+        option.appendChild(deleteBtn);
+        savedDropdown.appendChild(option);
+    });
+}
+
+// 6. Eventos e inicialización
+btnGenerar.addEventListener('click', generar);
+btnGuardarActual.addEventListener('click', guardarPaletaActual);
+
 generar();
+renderSavedPalettes();

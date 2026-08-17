@@ -149,3 +149,100 @@ button:hover {
     border-color: #27ae60;
     box-shadow: 0 0 12px rgba(39, 174, 96, 0.4);
 }
+/* Botones secundarios */
+.btn-secundario {
+    background-color: #2c3e50;
+    color: white;
+}
+
+.btn-secundario:hover {
+    background-color: #1a252f;
+}
+
+/* Clase para ocultar/mostrar elementos */
+.oculto {
+    display: none !important;
+}
+
+.saved-dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+/* Apariencia similar a la del selector */
+.dropdown-btn {
+  background-color: #ffffff;
+  color: #333333;
+  border: 1px solid #ccc;
+  padding: 8px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dropdown-btn:hover {
+  background-color: #f5f5f5;
+}
+
+/* Menú desplegable flotante */
+.dropdown-content {
+  position: absolute;
+  top: 105%;
+  left: 0;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  min-width: 240px;
+  max-height: 250px;
+  overflow-y: auto;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 50;
+  padding: 6px 0;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Opción individual en la lista desplegable */
+.palette-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.palette-option:hover {
+  background-color: #f0f0f0;
+}
+
+.mini-colors-preview {
+  display: flex;
+  gap: 3px;
+}
+
+.mini-color-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.delete-option-btn {
+  background: none;
+  border: none;
+  color: #d9534f;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 2px 6px;
+}
+
+.delete-option-btn:hover {
+  color: #a94442;
+}

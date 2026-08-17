@@ -7,25 +7,36 @@
     <link rel="stylesheet" href="./styles.css">
 </head>
 <body>
-<header>
-    <h1>Creación de Paleta de Colores</h1>
-    <p>Selecciona y crea tu Combinación de Colores</p> 
-</header>
-  <main> 
-    <section class="controles">
-        <label for="tamano-paleta">Cantidad de colores:</label>
+    <header>
+        <h1>Creación de Paleta de Colores</h1>
+        <p>Selecciona y crea tu Combinación de Colores</p> 
+    </header>
+
+    <main> 
+        <section class="controles">
+            <label for="tamano-paleta">Cantidad de colores:</label>
             <select id="tamano-paleta">
                 <option value="6">6 Colores</option>
                 <option value="8">8 Colores</option>
                 <option value="9">9 Colores</option>
             </select>
-                <button id="btn-generar">Generar paleta</button>
+
+            <button id="btn-generar">Generar paleta</button>
+            <button id="btn-guardar-actual" class="btn-secundario">💾 Guardar esta paleta</button>
+
+            <!-- UN SOLO BOTÓN DESPLEGABLE TIPO SELECTOR CON LA LISTA -->
+            <div class="saved-dropdown-container">
+                <button id="saved-dropdown-btn" class="dropdown-btn">
+                    Paletas Guardadas <span id="saved-count">(0)</span> ▼
+                </button>
                 
+                <div id="saved-palettes-dropdown" class="dropdown-content hidden">
+                    <!-- Las paletas guardadas se cargarán aquí como opciones visuales -->
+                </div>
+            </div>
         </section>
 
-        <!-- Contenedor donde JavaScript inyectará los colores dinámicamente -->
         <section id="contenedor-paleta" class="paleta" aria-live="polite">
-            
             <!-- Los colores aparecerán aquí -->
         </section>
     </main>
