@@ -266,3 +266,68 @@ button:hover {
   border: 2px solid #2c3e50;
   transform: scale(0.98);
 }
+.btn-candado {
+  transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-candado:active {
+  transform: scale(0.8);
+}
+@keyframes desplegarSuave {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-content:not(.hidden) {
+  animation: desplegarSuave 0.2s cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+
+/* Microinteracción en las filas de las paletas guardadas */
+.palette-option {
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.palette-option:hover {
+  background-color: #f0f4f8;
+  transform: translateX(2px);
+}
+/* Agrega este estilo en styles.css */
+@keyframes aparicionTarjeta {
+  from {
+    opacity: 0.4;
+    transform: scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.tarjeta-animada {
+  animation: aparicionTarjeta 0.25s ease-out;
+}
+/* Indicar que la muestra y el texto son clickeables */
+.muestra-color,
+.codigo-color {
+  cursor: pointer;
+  user-select: none;
+}
+
+/* Efecto hover suave al pasar sobre el área clickeable */
+.muestra-color:hover {
+  filter: brightness(1.05);
+}
+
+/* Estilo del texto temporal '¡Copiado!' */
+.codigo-color.copiado {
+  color: #27ae60;
+  font-weight: bold;
+  transform: scale(1.05);
+  transition: transform 0.15s ease, color 0.15s ease;
+}

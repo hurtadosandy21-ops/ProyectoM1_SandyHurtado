@@ -16,26 +16,52 @@ function randomHex() {
     return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
 }
 
-// 3. Crear cada tarjeta con botón de candado y animación integrada
+// 3. Crear cada tarjeta con botón de candado, animación y copiado al portapapeles
 function crearTarjeta(color, estaBloqueado = false) {
     const article = document.createElement('article');
-    // Se incluye 'tarjeta-animada' dentro de className para evitar errores de variables
     article.className = `tarjeta-color ${estaBloqueado ? 'bloqueada' : ''} tarjeta-animada`;
 
     const muestra = document.createElement('div');
     muestra.className = 'muestra-color';
     muestra.style.backgroundColor = color;
+    muestra.title = 'Haz clic para copiar el código HEX';
 
     const label = document.createElement('div');
     label.className = 'codigo-color';
     label.textContent = color;
+    label.title = 'Haz clic para copiar el código HEX';
+
+    // Función para copiar el código al portapapeles
+    const copiarColor = (e) => {
+        // Evitamos que se active si se hace clic en el candado
+        if (e.target.classList.contains('btn-candado')) return;
+
+        navigator.clipboard.writeText(color).then(() => {
+            const textoOriginal = label.textContent;
+            label.textContent = '¡Copiado!';
+            label.classList.add('copiado');
+
+            // Restablece el texto original después de 1.2 segundos
+            setTimeout(() => {
+                label.textContent = textoOriginal;
+                label.classList.remove('copiado');
+            }, 1200);
+        }).catch(err => {
+            console.error('Error al copiar: ', err);
+        });
+    };
+
+    // Permitir copiar al hacer clic en la muestra de color o en el texto HEX
+    muestra.addEventListener('click', copiarColor);
+    label.addEventListener('click', copiarColor);
 
     const btnCandado = document.createElement('button');
     btnCandado.className = 'btn-candado';
     btnCandado.textContent = estaBloqueado ? '🔒' : '🔓';
     btnCandado.title = estaBloqueado ? 'Desbloquear color' : 'Bloquear color';
 
-    btnCandado.addEventListener('click', () => {
+    btnCandado.addEventListener('click', (e) => {
+        e.stopPropagation(); // Evita activar el evento de copiado al pulsar el candado
         article.classList.toggle('bloqueada');
         const bloqueadoAhora = article.classList.contains('bloqueada');
         btnCandado.textContent = bloqueadoAhora ? '🔒' : '🔓';
