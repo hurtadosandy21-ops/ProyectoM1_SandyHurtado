@@ -16,10 +16,11 @@ function randomHex() {
     return '#' + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0');
 }
 
-// 3. Crear cada tarjeta con botón de candado
+// 3. Crear cada tarjeta con botón de candado y animación integrada
 function crearTarjeta(color, estaBloqueado = false) {
     const article = document.createElement('article');
-    article.className = `tarjeta-color ${estaBloqueado ? 'bloqueada' : ''}`;
+    // Se incluye 'tarjeta-animada' dentro de className para evitar errores de variables
+    article.className = `tarjeta-color ${estaBloqueado ? 'bloqueada' : ''} tarjeta-animada`;
 
     const muestra = document.createElement('div');
     muestra.className = 'muestra-color';
@@ -68,14 +69,16 @@ function generar() {
 }
 
 // 5. Gestión del menú desplegable único
-savedBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    savedDropdown.classList.toggle('hidden');
-});
+if (savedBtn) {
+    savedBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        savedDropdown.classList.toggle('hidden');
+    });
+}
 
 // Cerrar si se da clic fuera
 document.addEventListener('click', (e) => {
-    if (!savedDropdown.contains(e.target) && e.target !== savedBtn) {
+    if (savedDropdown && !savedDropdown.contains(e.target) && e.target !== savedBtn) {
         savedDropdown.classList.add('hidden');
     }
 });
@@ -110,6 +113,8 @@ function deletePalette(index) {
 
 // Renderizar la lista desplegable de paletas
 function renderSavedPalettes() {
+    if (!savedDropdown || !savedCount) return;
+
     savedDropdown.innerHTML = '';
     
     // Actualizar el número en la etiqueta principal del botón
@@ -155,8 +160,14 @@ function renderSavedPalettes() {
 }
 
 // 6. Eventos e inicialización
-btnGenerar.addEventListener('click', generar);
-btnGuardarActual.addEventListener('click', guardarPaletaActual);
+if (btnGenerar) {
+    btnGenerar.addEventListener('click', generar);
+}
 
+if (btnGuardarActual) {
+    btnGuardarActual.addEventListener('click', guardarPaletaActual);
+}
+
+// Carga inicial
 generar();
 renderSavedPalettes();

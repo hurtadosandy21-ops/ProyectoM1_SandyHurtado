@@ -246,3 +246,23 @@ button:hover {
 .delete-option-btn:hover {
   color: #a94442;
 }
+/* Transición suave al cambiar de color */
+.muestra-color {
+  transition: background-color 0.3s ease-in-out;
+}
+
+/* Efecto hover y microinteracción al presionar la tarjeta */
+.tarjeta-color {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta-color:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+
+/* Animación cuando el candado está bloqueado */
+.tarjeta-color.bloqueada {
+  border: 2px solid #2c3e50;
+  transform: scale(0.98);
+}
