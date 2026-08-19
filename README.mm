@@ -62,4 +62,51 @@ Implementación de la carga inicial automática mediante la invocación directa 
 
 Comprensión profunda de la sintaxis y ejecución de bucles e iteraciones en JavaScript.
 
-Recordatorio: Adjuntar en tu entrega la carpeta compartida de Google Drive con las capturas de pantalla de las conversaciones con la IA y el GIF o capturas del flujo principal de tu aplicación.
+BOTONES EXTRAS Y SUS FUNCIONES:
+
+Documentación del Proyecto: Generador de Paletas de ColoresEste documento detalla la funcionalidad de los botones interactivos e interfaz de la aplicación, así como el funcionamiento técnico de las animaciones y transiciones CSS implementadas.🔘 Guía de Botones y Componentes InteractivosComponenteElemento HTML / SelectorFunción y ComportamientoGenerar Paleta<button id="btn-generar">Ejecuta la función generar(). Evalúa la cantidad de colores seleccionada y genera una nueva paleta de colores aleatorios manteniendo intactos los colores que estén bloqueados.Bloqueo de Color (Candado)<button class="btn-candado">Alterna el estado de bloqueo (bloqueada) de una tarjeta individual. Cuando está bloqueada (🔒), evita que el color sea reemplazado al pulsar "Generar paleta".Guardar Paleta<button id="btn-guardar-actual">Toma todos los colores hexadecimales visibles actualmente en pantalla y los guarda en un arreglo global (savedPalettes), actualizando la lista y el contador.Menú Desplegable de Guardadas<button id="saved-dropdown-btn">Funciona como un botón/selector desplegable. Muestra la etiqueta con el contador dinámico (N). Al hacer clic, abre o cierra la lista flotante con las paletas guardadas.Copia de Color al Portapapeles.muestra-color / .codigo-colorAl hacer clic sobre el cuadro de color o sobre su código textual (HEX/HSL), copia el valor directamente al portapapeles con la API navigator.clipboard y muestra un aviso visual temporal ("¡Copiado!").Eliminar Paleta Guardada<button class="delete-option-btn">Ubicado dentro de cada fila del menú desplegable (✕). Elimina esa paleta específica del arreglo guardado y actualiza la lista sin cerrar el menú.🎨 Transiciones y Animaciones CSS (styles.css)Se implementaron animaciones y microinteracciones para mejorar el feedback visual y la experiencia de usuario (UX) sin recargar la interfaz.1. Animación de Entrada de Tarjetas (.tarjeta-animada)Función: Genera un efecto suave de escalado y aparición (fade-in) cada vez que se crean nuevas tarjetas de color en el DOM.Propiedades CSS clave:CSS@keyframes aparicionTarjeta {
+  0% {
+    opacity: 0.3;
+    transform: scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.tarjeta-animada {
+  animation: aparicionTarjeta 0.25s ease-out forwards;
+}
+2. Transición Suave en Cambios de Color (.muestra-color)Función: Evita saltos bruscos de color cuando una tarjeta cambia de tono al generar una nueva combinación.Propiedades CSS clave:CSS.muestra-color {
+  transition: background-color 0.3s ease-in-out;
+}
+3. Elevación al Pasar el Cursor (Hover effect)Función: Brinda feedback táctil/visual para indicar que la tarjeta de color es un elemento interactivo.Propiedades CSS clave:CSS.tarjeta-color {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tarjeta-color:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+}
+4. Despliegue del Menú Flotante (.dropdown-content)Función: Hace que el menú de paletas guardadas aparezca deslizándose levemente hacia abajo con opacidad gradual en lugar de mostrarse de golpe.Propiedades CSS clave:CSS@keyframes desplegarSuave {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dropdown-content:not(.hidden) {
+  animation: desplegarSuave 0.2s cubic-bezier(0, 0, 0.2, 1) forwards;
+}
+5. Microinteracción en Botón Candado (.btn-candado)Función: Simula un rebote elástico al presionar el candado para confirmar la acción de bloquear o desbloquear.Propiedades CSS clave:CSS.btn-candado {
+  transition: transform 0.15s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.btn-candado:active {
+  transform: scale(0.8);
+}
