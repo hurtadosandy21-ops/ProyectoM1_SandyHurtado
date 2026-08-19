@@ -47,12 +47,11 @@ paletas de colores armónicas en tiempo real. Permite bloquear colores preferido
     📂 Estructura del ProyectoPlaintext├── index.html        # Estructura semántica de la app
 
 Imagenes del proceso de la app
- ![Estructura inicial y posible error de ruta con styles y js]()
+ ![Estructura inicial y posible error de ruta con styles y js](./assets/html-y-error.png)
 
-  ![Imagen de app con estilos, botón de generar paleta y error corregido]
-  (./accets/html-y-error.png)
+  ![Imagen de app con estilos, botón de generar paleta y error corregido](./assets/boton-generar.png)
 
-![Selección de tamaño de paleta (6, 8 o 9 colores)](./assets/tamaño.png)
+![Selección de tamaño de paleta (6, 8 o 9 colores)](./assets/tamano.png)
 
 ![Botones extras incluidos: guardar paleta, menú desplegable para consultar o eliminar paletas, e ícono de bloqueo de color](./assets/botones-extras-png)
 
