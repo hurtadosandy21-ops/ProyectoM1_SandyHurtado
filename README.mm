@@ -45,3 +45,19 @@ paletas de colores armónicas en tiempo real. Permite bloquear colores preferido
     Consultar o eliminar: Haz clic en "📁 Guardadas (N)" para abrir la lista, cargar 
     una paleta anterior o borrarla con la opción ✕.
     📂 Estructura del ProyectoPlaintext├── index.html        # Estructura semántica de la app
+
+Imagenes del proceso de la app
+ ![Estructura inicial y posible error de ruta con styles y js]()
+
+  ![Imagen de app con estilos, botón de generar paleta y error corregido]
+  (./accets/html-y-error.png)
+
+![Selección de tamaño de paleta (6, 8 o 9 colores)](./assets/tamaño.png)
+
+![Botones extras incluidos: guardar paleta, menú desplegable para consultar o eliminar paletas, e ícono de bloqueo de color](./assets/botones-extras-png)
+
+![Demostración de botones de generación y bloqueo de colores](./assets/video-de-app.gif) 
+
+![Demostración de menú desplegable y eliminación de paletas guardadas](./assets/video-de-app2.gif)
+
+![Demostración de la opción y función de copiado de código de color](./assets/video-de-app3.gif)
