@@ -1,4 +1,8 @@
+
+https://hurtadosandy21-ops.github.io/ProyectoM1_SandyHurtado/
+
 Colorfly 
+
 — Generador de Paletas de ColoresUna aplicación web interactiva, 
 moderna e intuitiva diseñada para crear, gestionar y personalizar 
 paletas de colores armónicas en tiempo real. Permite bloquear colores preferidos,
