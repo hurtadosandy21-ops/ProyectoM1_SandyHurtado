@@ -61,6 +61,8 @@ Imagenes del proceso de la app
 
 
 ![Botones extras incluidos: guardar paleta, menú desplegable para consultar o eliminar paletas e ícono de bloqueo de color](./assets/botones-extras.png)
+Botones incluidos: Guardar paleta, Menú desplegable para colsultar paletas o elimianr, Iconó de bloqueo de color.
+
 
 
 ![Demostración de botones de generación y bloqueo de colores](./assets/video-de-app.gif) 
