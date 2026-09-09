@@ -1,12 +1,13 @@
 header{
-    color:rgb(145, 0, 36);
-    background-color: rgb(211, 171, 181);
+    color:rgb(181, 11, 54);
+    background-color:rgb(229, 224, 220);
     min-height: 30vh;
     display:flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
 }
+
 h1{
     font-size: 3rem;
 }
@@ -25,11 +26,49 @@ body{
 button{
     background-color:rgb(211, 171, 181);
     border-radius: 20px;
+    font-size:16px;
 }
 select{
     border-radius: 20px;
+    background-color:rgb(229, 171, 181);
+    font-size:16px;
 }
 .menu-paleta option{
     background-color: rgb(211, 171, 181);
     color:rgb(0,0,0);
+}
+#contenedor{
+    display:grid;
+    grid-template-columns: repeat(auto-fit,minmax(120px,1fr));
+    gap: 16px;
+    padding: 20px;
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+.color-card{
+    align-items: end;
+    height: 150px;
+    border-radius: 10px;
+    display: flex;
+    background-color:transparent;
+    justify-content: center;
+    padding-bottom: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s ease; 
+}
+.color-card:hover{
+    transform:translateY(- 5px);
+}
+.color-card span {
+    background-color: rgb(255,255,255);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-family: sans-serif;
+    font-weight: bold;
+    font-size:0.9rem;
+    color:#333;
+}
+body{
+     background-color:rgb(229, 224, 220);
 }

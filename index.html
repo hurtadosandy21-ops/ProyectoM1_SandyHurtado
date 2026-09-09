@@ -7,24 +7,27 @@
     <title>ProyectoM1_SandyHurtado</title>
 </head>
 <body>
-    <header>
+    
+    <header class="header-blob">
     <h1>Generador de paleta</h1>
     </header>
+   
     <main>
         <div class="menu-paleta">
-            <button id="btn-generar">Generar paleta </button>
-            <select id="cantidad">
+            <button id="btn-Generar">Generar paleta </button>
+            <select id="select-Cantidad">
                 <option value="6"> 6 Colores</option>
                 <option value="8">8 Colores</option>
                 <option value="9">9 Colores</option>
             </select>
-            <button id="btn-formato">Formato de Color</button>
-            <select id="formato" >
+            <button id="btn-Formato">Formato de Color</button>
+            <select id="select-Formato" >
                 <option value="HSL">HSL</option>
                 <option value="HEX">HEX</option>
             </select>
-            
         </div>
+        <div id="contenedor"></div>
     </main>
+    <script src="app.js"></script>
 </body>
 </html>
