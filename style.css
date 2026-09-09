@@ -1,3 +1,35 @@
+header{
+    color:rgb(145, 0, 36);
+    background-color: rgb(211, 171, 181);
+    min-height: 30vh;
+    display:flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
 h1{
-    color:brown;
+    font-size: 3rem;
+}
+body{
+    background-color: white;
+    margin:0;
+}
+.menu-paleta {
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    gap:15px;
+    border-radius: 20px;
+    margin:30px;
+}
+button{
+    background-color:rgb(211, 171, 181);
+    border-radius: 20px;
+}
+select{
+    border-radius: 20px;
+}
+.menu-paleta option{
+    background-color: rgb(211, 171, 181);
+    color:rgb(0,0,0);
 }
