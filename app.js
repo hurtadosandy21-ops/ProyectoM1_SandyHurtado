@@ -42,9 +42,10 @@ function generarPaleta(){
 
 btnGenerar.addEventListener(`click`,generarPaleta);
 selectCantidad.addEventListener(`change`,generarPaleta);
-selectFormato.addEventListener(`change`,(e) => {
-    const formato=e.target.value;
-    /*updateColorDisplay(formato);*/
+selectFormato.addEventListener(`change`,() => {
+    generarPaleta();
+   /* const formato = e.target.value;*/
+
 });
 
 generarPaleta();
