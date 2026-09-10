@@ -1,24 +1,36 @@
 :root{
     font-family:Georgia, 'Times New Roman', Times, serif;
 }
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
 header{
-    color:rgb(181, 11, 54);
+    color:rgb(169, 61, 88);
+    text-shadow:
+        -1px -1px 0 #000000,
+         1px -1px 0 #000000,
+        -1px  1px 0 #000000,
+         1px  1px 0 #000000;
     background-color:rgb(229, 224, 220);
-    min-height: 30vh;
+    min-height: 25vh;
     display:flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    
+    background-image: -moz-linear-gradient(10% 20% 50% 30%);
 }
-
 h1{
     font-size: 3rem;
 }
 body{
     background-color: white;
     margin:0;
+    max-width: 1200px;
+    margin:auto;
+    padding: 20px;
 }
 .menu-paleta {
     display:flex;
@@ -29,7 +41,7 @@ body{
     margin:30px;
 }
 button{
-    background-color:rgb(211, 171, 181);
+    background-color:rgb(229, 171, 181);
     border-radius: 20px;
     border-color: rgb(0,0,0);
     font-size:16px;
@@ -50,9 +62,7 @@ select{
     font-size:16px;
     text-align: center;
 }
-.tamaño{
-    color:black;
-}
+
 .menu-paleta option{
     background-color: rgb(211, 171, 181);
     color:rgb(0,0,0);
@@ -91,6 +101,7 @@ select{
 }
 body{
      background-color:rgb(229, 224, 220);
+
 }
 footer, .pie-pagina {
     width: 100%;
