@@ -92,3 +92,64 @@ select{
 body{
      background-color:rgb(229, 224, 220);
 }
+footer, .pie-pagina {
+    width: 100%;
+    background-color:rgb(229, 224, 220);
+    color: #000000;             /* Texto Negro */
+    padding: 30px 0;
+    margin-top: auto;
+   
+}
+
+.contenido-footer {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+}
+
+.autor-info {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #000000;             
+    margin: 0;
+}
+
+.redes-contacto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    width: 100%;
+}
+
+.enlace-contacto {
+    color: #000000;             
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 20px;
+   background-color:rgb(229, 224, 220);
+    border: 1px solid #f4acb7;
+    border-radius: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    transition: all 0.25s ease;
+}
+
+.enlace-contacto:hover {
+    color: #000000;
+    background-color:rgb(229, 224, 220);
+    border-color: #e598a5;
+    transform: translateY(-3px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.enlace-contacto .icono {
+    font-size: 1.2rem;
+}

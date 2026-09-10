@@ -44,7 +44,6 @@ btnGenerar.addEventListener(`click`,generarPaleta);
 selectCantidad.addEventListener(`change`,generarPaleta);
 selectFormato.addEventListener(`change`,() => {
     generarPaleta();
-   /* const formato = e.target.value;*/
 
 });
 
