@@ -1,13 +1,13 @@
-:root{
-    font-family:Georgia, 'Times New Roman', Times, serif;
-}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family:Georgia, 'Times New Roman', Times, serif;
 }
 
 header{
+    /*Titulo con bordes negros aplicados*/
     color:rgb(169, 61, 88);
     text-shadow:
         -1px -1px 0 #000000,
@@ -21,16 +21,7 @@ header{
     justify-content: center;
     align-items: center;
     background-image: -moz-linear-gradient(10% 20% 50% 30%);
-}
-h1{
-    font-size: 3rem;
-}
-body{
-    background-color: white;
-    margin:0;
-    max-width: 1200px;
-    margin:auto;
-    padding: 20px;
+    font-size:2rem; 
 }
 .menu-paleta {
     display:flex;
@@ -62,7 +53,6 @@ select{
     font-size:16px;
     text-align: center;
 }
-
 .menu-paleta option{
     background-color: rgb(211, 171, 181);
     color:rgb(0,0,0);
@@ -100,7 +90,11 @@ select{
     color:#333;
 }
 body{
-     background-color:rgb(229, 224, 220);
+    background-color:rgb(229, 224, 220);
+    margin:0;
+    max-width: 1200px;
+    margin:auto;
+    padding: 20px;
 
 }
 footer, .pie-pagina {
