@@ -1,5 +1,4 @@
 const btnGenerar = document.getElementById(`btn-Generar`);
-const btnFormato = document.getElementById(`btn-Formato`);
 const selectCantidad = document.getElementById(`select-Cantidad`);
 const selectFormato = document.getElementById(`select-Formato`);
 const contenedor = document.getElementById(`contenedor`);
@@ -40,10 +39,12 @@ function generarPaleta(){
         contenedor.appendChild(colorCard);
     }
 }
- 
+
 btnGenerar.addEventListener(`click`,generarPaleta);
-btnFormato.addEventListener(`click`,generarPaleta);
 selectCantidad.addEventListener(`change`,generarPaleta);
-selectFormato.addEventListener(`change`,generarPaleta);
+selectFormato.addEventListener(`change`,(e) => {
+    const formato=e.target.value;
+    /*updateColorDisplay(formato);*/
+});
 
 generarPaleta();
