@@ -20,14 +20,16 @@
                 <option value="8">8 Colores</option>
                 <option value="9">9 Colores</option>
             </select>
-            <div class= "format"></div>
-            <label id="btn-Formato">Formato de Color:</label> 
-            <!-- cambió de botón formato por un label, por que el "button" 
-            no tenía ni un funcionamiento, y así evitamos confusión para el usuario-->
-            <select id="select-Formato" >
-                <option value="HSL">HSL</option>
-                <option value="HEX">HEX</option>
-            </select>
+            <div class= "format">
+              <label id="btn-Formato">Formato de Color:</label> 
+            </div>
+              <!-- cambió de botón formato por un label, por que el "button" 
+              no tenía ni un funcionamiento, y así evitamos confusión para el usuario-->
+                <select id="select-Formato" >
+                   <option value="HSL">HSL</option>
+                  <option value="HEX">HEX</option>
+                </select>
+            
             <div class="button">
                 <button id="btn-Generar">Generar paleta </button>
                  <!-- cambio de orden de boton generar, para que despues de selecionar 
@@ -35,8 +37,10 @@
                 -->
             </div>
             </div>
+            <div id="toast">¡Paleta Generada!</div>
         </div>
         <div id="contenedor"></div>
+      
     </main>
     <footer class="pie-pagina">
         <div class="contenido-footer">

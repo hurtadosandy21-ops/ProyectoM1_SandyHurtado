@@ -139,7 +139,7 @@ footer, .pie-pagina {
     align-items: center;
     gap: 10px;
     padding: 10px 20px;
-   background-color:rgb(229, 224, 220);
+    background-color:rgb(229, 224, 220);
     border: 1px solid #f4acb7;
     border-radius: 20px;
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
@@ -157,6 +157,63 @@ footer, .pie-pagina {
 .enlace-contacto .icono {
     font-size: 1.2rem;
 }
+
+#toast {
+    display: none;
+    margin: 15px auto;
+    padding: 12px 20px;
+    background-color: rgb(229, 224, 220);
+    color: black;
+    border: 1px solid #e598a5;
+    border-radius: 8px;
+    text-align: center;
+    width: fit-content;
+    font-weight: bold;
+
+}
+/* Botón para bloquear/desbloquear colores */
+.lock-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    padding: 0;
+    border-radius: 50%;
+    background-color: transparent;
+    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.lock-button:hover {
+    transform: scale(1.1);
+    
+}
+
+/* Necesario para poder posicionar el botón */
+.color-card {
+    position: relative;
+}
+
+/* Indicador visual de bloqueo */
+.color-card.bloqueado::after {
+    content: "Bloqueado";
+    position: absolute;
+    top: 55px;
+    right: 10px;
+    color: rgb(229, 224, 220);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-family: sans-serif;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+
 /* Tablets */
 @media (max-width: 768px){
 
