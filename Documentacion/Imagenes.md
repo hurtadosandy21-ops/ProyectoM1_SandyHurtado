@@ -2,7 +2,7 @@
 
 Está imagen es la referencia de la estructura inicial de la App solo con HTML y CSS 
 
-![Estructura Inicial](../assets/screenshots/arreglo-de-botones.png)
+![Estructura Inicial](../assets/arreglo-de-botones.png)
 
 ## Cambio de estilos 
 
@@ -23,7 +23,7 @@ Está imagen refleja el cambio de estilos, queria mejorar el color por defecto a
 
  Añadí la opción de bloquear color y así se veía al inicio, despues este fue modificado 
 
- ![Bloqueo de color ](../assets/botn-candado.png)
+ ![Bloqueo de color ](../assets/boton-candado.png)
 
 ## Mejora de menú desplegables
  
@@ -35,4 +35,6 @@ Está imagen refleja el cambio de estilos, queria mejorar el color por defecto a
  ## Imagen de Funcionamiento con cambios y resultado final 
 
   ![Funcionamineto](../assets/fin.png)
+
+  [Volver ](../Documentacion/README.md)
 
