@@ -1,37 +1,50 @@
 # 🤖 Uso de Inteligencia Artificial (IA)
 
-Durante el desarrollo de este proyecto se utilizó inteligencia artificial como herramienta de apoyo para la investigación, resolución de dudas técnicas, generación de código, mejora de la interfaz y creación de la documentación.
+Durante el desarrollo de este proyecto se utilizó inteligencia artificial como herramienta de apoyo para la investigación, resolución de dudas técnicas, generación de ejemplos de código, mejora de la interfaz y documentación.
 
-La IA fue empleada como un recurso complementario dentro del proceso de aprendizaje y desarrollo, mientras que las decisiones finales de implementación, pruebas y adaptación del código fueron realizadas manualmente.
+La inteligencia artificial se utilizó principalmente como una **base o guía inicial** para comprender conceptos y obtener ejemplos de implementación. A partir de estas propuestas, el código fue **modificado, adaptado, probado y mejorado manualmente** para cumplir con los requerimientos específicos del proyecto.
 
 Las herramientas utilizadas fueron:
 
-- **Microsoft Copilot**: apoyo en generación de código, mejora del README, documentación y organización del proyecto.
-- **Google Gemini**: apoyo en consultas técnicas, propuestas de solución y comprensión de conceptos relacionados con el desarrollo web.
-Todo el contenido generado por IA fue revisado, adaptado y validado antes de ser incorporado al proyecto.
+- **Microsoft Copilot**: apoyo en generación de código, documentación y organización del proyecto.
+- **Google Gemini**: apoyo en consultas técnicas, comprensión de conceptos y propuestas de solución.
+
+> **Nota:** El código generado por IA no fue utilizado directamente como una versión final. Las propuestas obtenidas fueron tomadas como base de aprendizaje y posteriormente fueron modificadas y mejoradas por mí para adaptarlas al funcionamiento y diseño del Generador de Paletas.
+
 
 ---
 
-## 📝 Prompt 1: Generación de colores aleatorios
+# 📝 Prompt 1: Estructura base del Generador de Paletas
 
-### Objetivo
+### 🎯 Objetivo
 
-Desarrollar una función capaz de generar colores aleatorios para construir las distintas paletas de la aplicación.
+Obtener una estructura inicial en JavaScript para comenzar a desarrollar el Generador de Paletas, conectando los elementos HTML con la lógica de generación de colores.
 
 ### Prompt
 
-```text
-Genera una función en JavaScript que cree colores aleatorios en formato HEX cada vez que se presione un botón.
-```
+Ayúdame con una estructura base en JavaScript para mi aplicación "Generador de Paletas". Necesito declarar variables para el botón de generar, el selector de formato HEX y HSL, y la cantidad de colores seleccionada mediante un select con opciones como 6, 8 y 9 colores.
 
 ### Resultado obtenido
 
-La IA proporcionó una solución basada en la generación aleatoria de caracteres hexadecimales para construir códigos de color válidos.
+La IA proporcionó una estructura inicial para seleccionar elementos del DOM, obtener los valores de los controles y ejecutar una función cuando el usuario presionara el botón de generar.
 
-### Ejemplo inicial sugerido
+### Código base sugerido
 
-```javascript
+const btnGenerar = document.querySelector("#btn-generar");
+const formatoColor = document.querySelector("#formato");
+const cantidadColores = document.querySelector("#cantidad");
+
+btnGenerar.addEventListener("click", () => {
+    const formato = formatoColor.value;
+    const cantidad = cantidadColores.value;
+
+    generarPaleta(formato, cantidad);
+});
+
+También se utilizó como referencia una función para generar colores HEX:
+
 function generarColorHex() {
+
     const caracteres = "0123456789ABCDEF";
     let color = "#";
 
@@ -41,22 +54,30 @@ function generarColorHex() {
 
     return color;
 }
-```
 
-### Aplicación en el proyecto
+### 🔧 Adaptación realizada
 
-Este ejemplo sirvió como base para desarrollar la función `getRandomHex()`, utilizada para generar automáticamente los colores que forman cada paleta.
+Este código fue utilizado únicamente como base inicial. Posteriormente fue modificado y ampliado para adaptarlo a la estructura real del proyecto.
 
-### Aprendizaje obtenido
+La implementación final utiliza elementos como:
 
-Gracias a este prompt se comprendió:
+const btnGenerar = document.getElementById("btn-Generar");
+const selectCantidad = document.getElementById("select-Cantidad");
+const selectFormato = document.getElementById("select-Formato");
+const contenedor = document.getElementById("contenedor");
+A partir de esta estructura se agregaron las funciones necesarias para generar paletas de diferentes cantidades y formatos.
 
-- Cómo funcionan los colores HEX.
-- Cómo generar valores aleatorios en JavaScript.
-- Cómo construir funciones reutilizables.
-- Cómo utilizar ciclos para crear cadenas dinámicamente.
+### 📚 Aprendizaje obtenido
 
-> **Nota:** El código proporcionado por la IA fue tomado como referencia inicial. Posteriormente se realizaron adaptaciones y mejoras para integrarlo correctamente con la lógica general de la aplicación y facilitar futuras ampliaciones del proyecto.
+Este prompt permitió comprender:
+
+Cómo conectar HTML con JavaScript.
+Cómo utilizar getElementById().
+Cómo obtener valores de un elemento <select>.
+Cómo utilizar eventos como click.
+Cómo organizar una función principal para generar una paleta.
+
+Nota: La estructura proporcionada por la IA fue solamente una base. El código final fue desarrollado, modificado y mejorado por mí de acuerdo con las necesidades del proye
 
 ## 🎨 Prompt 2: Conversión y manejo de formatos de color
 
@@ -408,15 +429,13 @@ Durante este proceso se comprendió la importancia de:
 
 ### Prompt
 
-```text
 Ayúdame a crear una sección llamada "Estructura de la App" para mi README, explicando la función de cada archivo y carpeta del proyecto.
-```
 
 ### Uso
 
 Se utilizó para describir la arquitectura básica del proyecto y el propósito de cada archivo principal.
 
----
+
 
 ## ✅ Conclusión
 
@@ -430,3 +449,121 @@ La inteligencia artificial fue utilizada como una herramienta de apoyo para:
 - Corregir errores de redacción y ortografía.
 
 Todo el contenido generado por IA fue revisado, adaptado y validado antes de ser incorporado al proyecto.
+
+## Prompt 8: Bloqueo y copia de colores
+
+#### 🎯 Objetivo
+
+Agregar interacción a las tarjetas de color para permitir bloquear colores y copiar sus valores.
+
+### Prompt
+Ayúdame a implementar tarjetas de colores interactivas. Cada tarjeta debe tener un botón para bloquear o desbloquear el color y también permitir copiar el valor HEX o HSL al hacer clic sobre la tarjeta.
+Resultado obtenido
+
+La IA propuso utilizar eventos de JavaScript, clases CSS y la API del portapapeles para controlar estas acciones.
+
+Código base utilizado como referencia
+colorCard.addEventListener("click", () => {
+    navigator.clipboard.writeText(colorValue);
+});
+
+Para el bloqueo se utilizó una clase:
+
+colorCard.classList.toggle("bloqueado");
+
+### 🔧 Adaptación realizada
+
+La funcionalidad fue ampliada para que los colores bloqueados se mantengan cuando se genera una nueva paleta.
+
+### De esta manera:
+
+🔒 Color bloqueado → se mantiene
+🔓 Color desbloqueado → puede cambiar
+
+También se agregó un botón específico para bloquear y desbloquear cada color.
+
+Además, al hacer clic sobre una tarjeta se puede copiar el valor del color al portapapeles.
+
+### 📚 Aprendizaje obtenido
+
+Este proceso permitió comprender:
+
+Manejo de eventos click.
+Uso de classList.
+Creación de elementos dinámicos.
+Uso de navigator.clipboard.
+Manejo de estados individuales dentro de una interfaz.
+Integración entre JavaScript y CSS.
+
+>Nota: La solución inicial proporcionada por la IA fue utilizada como base. La lógica de bloqueo, generación y copia fue posteriormente modificada y mejorada por mí para adaptarla al funcionamiento final del proyecto.
+
+## 💾 Prompt 9: Guardado y recuperación de paletas
+
+### 🎯 Objetivo
+
+Permitir que el usuario pueda guardar sus paletas y recuperarlas posteriormente utilizando localStorage.
+
+ ### Prompt
+Ayúdame a crear un sistema para guardar las paletas generadas en localStorage. Cada paleta debe conservar sus colores, formato y estado de bloqueo, y debe poder cargarse o eliminarse posteriormente.
+Resultado obtenido
+
+La IA explicó cómo utilizar:
+
+localStorage.setItem();
+localStorage.getItem();
+JSON.stringify();
+JSON.parse();
+Código base
+localStorage.setItem(
+    "paletasGuardadas",
+    JSON.stringify(paletas)
+);
+
+Y para recuperar los datos:
+
+const paletas = JSON.parse(
+    localStorage.getItem("paletasGuardadas")
+) || [];
+🔧 Adaptación realizada
+
+A partir de esta base se desarrolló un sistema completo de almacenamiento.
+
+Cada paleta guarda información como:
+
+{
+    id: Date.now(),
+    colores: colores,
+    formato: selectFormato.value
+}
+
+Cada color también conserva su estado:
+
+{
+    color: card.dataset.color,
+    bloqueado: card.classList.contains("bloqueado")
+}
+
+El sistema permite:
+
+💾 Guardar una paleta.
+🎨 Visualizar las paletas guardadas.
+🔄 Cargar una paleta.
+❌ Eliminar una paleta.
+🔒 Conservar los colores bloqueados.
+💿 Mantener las paletas almacenadas mediante localStorage.
+
+También se implementó una validación de los datos almacenados para evitar problemas con información antigua o incorrecta.
+
+### 📚 Aprendizaje obtenido
+
+Este prompt permitió comprender:
+
+Cómo funciona localStorage.
+Cómo almacenar objetos utilizando JSON.
+Cómo recuperar información almacenada.
+Cómo utilizar filter() para eliminar elementos.
+Cómo buscar una paleta mediante un identificador.
+Cómo reconstruir elementos HTML a partir de datos almacenados.
+
+>Nota: La estructura inicial proporcionada por la IA fue utilizada como base de aprendizaje. El sistema final fue ampliado, modificado y mejorado por mí para incorporar las diferentes funcionalidades del proyecto.
+
