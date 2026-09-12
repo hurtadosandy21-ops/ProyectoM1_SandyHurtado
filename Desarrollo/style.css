@@ -25,19 +25,72 @@ header{
     font-size: clamp(1.8rem, 4vw, 3rem); 
 }
 /*---- MENÚ DE LA PALETA ----*/
+
+/*---- MENÚ DE LA PALETA ----*/
+
 .menu-paleta {
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
-    gap:15px;
-    border-radius: 20px;
-    margin:30px;
+    gap: 15px;
+    width: 100%;
+    margin: 30px auto;
+    flex-wrap: wrap;
+}
+/* Opciones de cantidad y formato */
+
+.opciones-paleta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
 }
 
+
+/* Cada opción */
+
+.opcion {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    gap: 5px;
+}
+
+/* Etiquetas */
+
+.opcion label {
+    font-size: 16px;
+    text-align: center;
+}
+
+
+/* Botón generar */
+
+.button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+}
+#btn-Generar{
+    color:rgb(0, 0, 0);
+    background-color: rgb(229, 224, 220);
+}
+
+/* Botón guardar */
+.guardar-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px ;
+}
 button{
     background-color:rgb(229, 171, 181);
-    border-radius: 20px;
     border-color: rgb(0,0,0);
+    border-radius: 20px;
     padding: 10px 20px;
     font-size:16px;
     justify-content: center;
@@ -63,6 +116,8 @@ select{
 .menu-paleta option{
     background-color: rgb(211, 171, 181);
     color:rgb(0,0,0);
+    margin: 10px;
+    gap: 10px;
 }
 
 /*---- CONTENEDOR ----*/
@@ -92,6 +147,7 @@ select{
 }
 /* Cuando el color está bloqueado,
 nos va a servir para que el usuario identifique el color bloqueado */ 
+
 .color-card.bloqueado { 
     box-shadow: 0 0 0 1px #000;
  } 
@@ -121,6 +177,7 @@ nos va a servir para que el usuario identifique el color bloqueado */
 .color-card span:hover {
     transform: translateX(-50%) scale(1.05);
 }
+
 /*---- BOTÓN DE BLOQUEO ----*/
 
 .lock-button {
@@ -160,6 +217,7 @@ nos va a servir para que el usuario identifique el color bloqueado */
     transform: scale(1.1);
     background-color: white;
 }
+
 /*---- COLOR BLOQUEADO ----*/
 
 .color-card.bloqueado { 
@@ -231,6 +289,128 @@ body{
     width: fit-content;
     font-weight: bold;
 
+}
+
+
+/*---- MENÚ DE PALETAS GUARDADAS ----*/
+
+.guardadas {
+    position: relative;
+
+    width: fit-content;
+
+    margin: 0;
+}
+
+/* Botón de paletas guardadas */
+
+.btn-guardadas {
+    min-width: 220px;
+    cursor: pointer;
+    margin: 10px;
+}
+
+/* Lista desplegable */
+
+.lista-guardadas {
+    display: none;
+    justify-content: center;
+    align-items: center;
+    top: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    width: max-content;
+    min-width: 270px;
+    padding: px;
+    background-color: rgb(229, 224, 220);
+    border: 1px solid #000;
+    border-radius: 12px;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+}
+
+/* Cuando el menú está abierto */
+
+.lista-guardadas.abierto {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 6px;
+}
+
+
+/* Cada paleta guardada */
+
+.paleta-Guardadas {
+    display: flex;
+
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 10px;
+
+    width: 100%;
+
+    padding: 4px;
+
+    box-sizing: border-box;
+}
+
+
+/* Vista de colores */
+
+.vista-colores {
+    display: flex;
+
+    align-items: center;
+
+    gap: 4px;
+
+    padding: 3px;
+
+    cursor: pointer;
+
+    border-radius: 6px;
+}
+
+
+/* Cuadritos pequeños */
+
+.color-mini {
+    width: 28px;
+    height: 28px;
+
+    border-radius: 4px;
+
+    border: 1px solid rgba(0, 0, 0, 0.25);
+
+    flex-shrink: 0;
+}
+
+
+/* Botón X */
+
+.eliminar-paleta {
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 20px;
+    background-color: rgb(229, 168, 181);
+    border: 1px solid #000;
+    flex-shrink: 0;
+}
+
+
+/* Efecto al pasar el mouse */
+
+.eliminar-paleta:hover {
+    transform: scale(1.05);
 }
 
 /*---- FOOTER ----*/

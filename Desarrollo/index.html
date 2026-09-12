@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -6,64 +7,107 @@
     <link rel="stylesheet" href="./style.css">
     <title>ProyectoM1_SandyHurtado</title>
 </head>
+
 <body>
-    
+
     <header class="header-blob">
-    <h1>Generador de paleta</h1>
+        <h1>Generador de paleta</h1>
     </header>
-   
+
     <main>
+
         <div class="menu-paleta">
+
             <label id="Tamaño">Cantidad:</label>
-            <select id="select-Cantidad">
-                <option value="6"> 6 Colores</option>
+
+             <select id="select-Cantidad">
+                <option value="6">6 Colores</option>
                 <option value="8">8 Colores</option>
                 <option value="9">9 Colores</option>
-            </select>
-            <div class= "format">
-              <label id="btn-Formato">Formato de Color:</label> 
-            </div>
-              <!-- cambió de botón formato por un label, por que el "button" 
-              no tenía ni un funcionamiento, y así evitamos confusión para el usuario-->
-                <select id="select-Formato" >
-                   <option value="HSL">HSL</option>
-                  <option value="HEX">HEX</option>
-                </select>
-            
-            <div class="button">
-                <button id="btn-Generar">Generar paleta </button>
-                 <!-- cambio de orden de boton generar, para que despues de selecionar 
-                  las opciones de cantidad y formato el usuario pueda generar su paleta a preferencia 
-                -->
-            </div>
-            </div>
-            <div id="toast">¡Paleta Generada!</div>
-        </div>
+             </select>
+
+              <div class="format">
+                <label id="btn-Formato">Formato de Color:</label>
+              </div>
+
+              <select id="select-Formato">
+                <option value="HSL">HSL</option>
+                <option value="HEX">HEX</option>
+              </select>
+
+              <div class="button">
+                 <button id="btn-Generar"> Generar paleta </button>
+
+                   <div class="guardar-container">
+                     <button id="btn-Guardar">💾 Guardar paleta </button>
+
+                      <div id="paletas-Guardadas" class="guardadas">
+
+                          <button id="btn-MostrarGuardadas" class="btn-guardadas">
+                         Paletas guardadas ▼
+                          </button>
+
+                          <div id="lista-Guardadas" class="lista-guardadas"></div>
+
+                     </div>
+                 </div>
+             </div>
+         
+        <div id="toast">¡Paleta Generada!</div>
+        
         <div id="contenedor"></div>
-      
+
     </main>
+
     <footer class="pie-pagina">
+
         <div class="contenido-footer">
-            <p class="autor-info">&copy; 2026 Sandy Hurtado</p>
-            
+
+            <p class="autor-info">
+                &copy; 2026 Sandy Hurtado
+            </p>
+
             <div class="redes-contacto">
-                <a href="mailto:sandyhurtado21@gmail.com" class="enlace-contacto" title="Enviar correo a Sandy">
-                    <span class="icono">🪄</span> 
+
+                <a href="mailto:sandyhurtado21@gmail.com"
+                   class="enlace-contacto"
+                   title="Enviar correo a Sandy">
+
+                    <span class="icono">🪄</span>
                     <span class="texto">Correo</span>
+
                 </a>
 
-                <a href="https://github.com/hurtadosandy21-ops" class="enlace-contacto" target="_blank" rel="noopener noreferrer" title="Perfil de GitHub">
-                    <span class="icono">⭐</span> 
+                <a href="https://github.com/hurtadosandy21-ops"
+                   class="enlace-contacto"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   title="Perfil de GitHub">
+
+                    <span class="icono">⭐</span>
                     <span class="texto">GitHub</span>
+
                 </a>
 
-                <a href="https://www.linkedin.com/in/sandy-hurtado-a40aa1421/" class="enlace-contacto" target="_blank" rel="noopener noreferrer" title="Perfil de LinkedIn">
-                    <span class="icono">🐧</span> 
+                <a href="https://www.linkedin.com/in/sandy-hurtado-a40aa1421/"
+                   class="enlace-contacto"
+                   target="_blank"
+                   rel="noopener noreferrer"
+                   title="Perfil de LinkedIn">
+
+                    <span class="icono">🐧</span>
                     <span class="texto">LinkedIn</span>
+
                 </a>
+
             </div>
+
         </div>
+
     </footer>
+
     <script src="app.js"></script>
+
 </body>
 </html>
+
