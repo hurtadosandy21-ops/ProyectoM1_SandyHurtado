@@ -16,8 +16,10 @@ function getRandomHex() {
 
 function getRandomHSL() {
     const h = Math.floor(Math.random() * 360);
-    const s = Math.floor(Math.random() * 50)+ 40;
-    const l = Math.floor(Math.random() * 50)+ 40;
+    const s = Math.floor(Math.random() * 50) + 40;
+    const l = Math.floor(Math.random() * 50) + 40;
+
+    // Cambio de fórmula, para generar mejores colores y que sean más visibles en la paleta
 
     return `hsl(${h}, ${s}%, ${l}%)`;
 }
@@ -36,7 +38,6 @@ function generarPaleta() {
     if (!contenedor) return;
 
     const cantidad = parseInt(selectCantidad.value, 10);
-    const formato = selectFormato.value;
 
     // Guardamos los colores que estaban bloqueados
     const tarjetasAnteriores = [...contenedor.querySelectorAll(".color-card")];
@@ -79,6 +80,30 @@ function generarPaleta() {
         const colorText = document.createElement("span");
         colorText.textContent = colorValue;
 
+       // Texto que aparece al pasar el mouse
+        const copyHint = document.createElement("small");
+        copyHint.textContent = "Clic para copiar";
+        copyHint.classList.add("copy-hint");
+
+
+        // Evento para copiar el color
+        colorCard.addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(colorValue);
+
+                copyHint.textContent = "¡Copiado! ✓";
+                copyHint.classList.add("copiado");
+
+                setTimeout(() => {
+                    copyHint.textContent = "Clic para copiar";
+                    copyHint.classList.remove("copiado");
+                }, 1500);
+
+            } catch (error) {
+                copyHint.textContent = "No se pudo copiar";
+            }
+        });
+
         // Botón de bloqueo
         const lockButton = document.createElement("button");
         lockButton.classList.add("lock-button");
@@ -98,6 +123,7 @@ function generarPaleta() {
 
         // Evento del botón
         lockButton.addEventListener("click", (event) => {
+
             // Evita que el click haga otras acciones
             event.stopPropagation();
 
@@ -115,13 +141,14 @@ function generarPaleta() {
         // Agregamos elementos a la tarjeta
         colorCard.appendChild(lockButton);
         colorCard.appendChild(colorText);
+        colorCard.appendChild(copyHint);
 
         // Agregamos tarjeta al contenedor
         contenedor.appendChild(colorCard);
     }
 }
 
-// Uso de toas para un anunico de paleta generada
+// Uso de toast para un anuncio de paleta generada
 function mostrarToast() {
     const toast = document.getElementById("toast");
 
@@ -131,7 +158,7 @@ function mostrarToast() {
 
     setTimeout(() => {
         toast.style.display = "none";
-    }, 2000);
+    }, 1000);
 }
 
 // Botón generar

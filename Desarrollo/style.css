@@ -5,6 +5,7 @@
     box-sizing: border-box;
     font-family:Georgia, 'Times New Roman', Times, serif;
 }
+/*---- HEADER ----*/
 
 header{
     /*Titulo con bordes negros aplicados*/
@@ -23,6 +24,7 @@ header{
     background-image: -moz-linear-gradient(10% 20% 50% 30%);
     font-size: clamp(1.8rem, 4vw, 3rem); 
 }
+/*---- MENÚ DE LA PALETA ----*/
 .menu-paleta {
     display:flex;
     justify-content: center;
@@ -31,6 +33,7 @@ header{
     border-radius: 20px;
     margin:30px;
 }
+
 button{
     background-color:rgb(229, 171, 181);
     border-radius: 20px;
@@ -41,9 +44,11 @@ button{
     cursor: pointer;
     transition: all .3s ease;
 }
+
 button:hover{
     transform: scale(1.05);
 }
+
 select{
     border-radius: 20px;
     background-color:rgb(229, 171, 181);
@@ -59,6 +64,9 @@ select{
     background-color: rgb(211, 171, 181);
     color:rgb(0,0,0);
 }
+
+/*---- CONTENEDOR ----*/
+
 #contenedor{
     display:grid;
     grid-template-columns: repeat(auto-fit,minmax(180px,1fr));
@@ -68,35 +76,165 @@ select{
     max-width: 1000px;
     margin: 0 auto;
 }
-.color-card{
-    align-items: end;
+.color-card {
+    position: relative;
     min-height: 150px;
+
     border-radius: 10px;
     display: flex;
-    background-color:transparent;
+    background-color: transparent;
+
     justify-content: center;
+    align-items: flex-end;
     padding-bottom: 12px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    transition: transform 0.2s ease; 
+    transition: transform 0.2s ease;
 }
-.color-card:hover{
-    transform: translateY(-5px);
-}
+/* Cuando el color está bloqueado,
+nos va a servir para que el usuario identifique el color bloqueado */ 
+.color-card.bloqueado { 
+    box-shadow: 0 0 0 1px #000;
+ } 
+ 
 .color-card span {
+    position: absolute;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+
     background-color: rgb(255,255,255);
     padding: 4px 8px;
     border-radius: 6px;
+
     font-family: sans-serif;
     font-weight: bold;
-    font-size:0.9rem;
-    color:#333;
+    font-size: 0.9rem;
+    color: #333;
+
+    cursor: pointer;
+    white-space: nowrap;
+
+    z-index: 2;
+    transition: transform 0.2s ease;
 }
+
+.color-card span:hover {
+    transform: translateX(-50%) scale(1.05);
+}
+/*---- BOTÓN DE BLOQUEO ----*/
+
+.lock-button {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+
+    width: 40px;
+    height: 40px;
+
+    padding: 0;
+    border: 2px solid #000;
+    border-radius: 50%;
+
+    background-color: rgba(255, 255, 255, 0.85);
+
+    font-size: 20px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    cursor: pointer;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.color-card:hover .lock-button {
+    opacity: 1;
+    visibility: visible;
+}
+
+.lock-button:hover {
+    transform: scale(1.1);
+    background-color: white;
+}
+/*---- COLOR BLOQUEADO ----*/
+
+.color-card.bloqueado { 
+    box-shadow: 0 0 0 1px #000;
+ } 
+ 
+ /* Indicador visual de bloqueo */
+ .color-card.bloqueado::after { 
+    content: "Bloqueado";
+    position: relative;
+
+    top: 55px; 
+    right: 10px;
+
+    color:rgb(229, 224, 220);
+    padding: 4px 8px; 
+    border-radius: 6px; 
+
+    font-family: sans-serif; 
+    font-size: 12px; 
+    font-weight: bold; 
+}
+
+/*---- MENSAJE COPIAR ----*/
+
+/* Botón para bloquear/desbloquear colores */
+.copy-hint {
+    position: absolute;
+    bottom: 42px;
+    right: 10px;
+    background-color: transparent;
+    color: rgb(54, 50, 46);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-family: sans-serif;
+    font-size: 11px;
+    font-weight: bold;
+    pointer-events: none;
+    opacity: 0;
+    visibility: visible;
+    transition: opacity 0.2s ease;
+}
+.color-card:hover .copy-hint {
+    opacity: 1;
+    visibility: visible;
+}
+
+/*---- BODY ----*/
+
 body{
     background-color:rgb(229, 224, 220);
     margin:0 auto;
     max-width: 1200px;
     padding: 20px;
 }
+
+/*---- TOAST ----*/
+
+
+#toast {
+    display: none;
+    margin: 2px auto;
+    padding: 5px 5px;
+    background-color: rgb(229, 224, 220);
+    color: black;
+    border: 1px solid #e598a5;
+    border-radius: 8px;
+    text-align: center;
+    width: fit-content;
+    font-weight: bold;
+
+}
+
+/*---- FOOTER ----*/
+
 footer, .pie-pagina {
     width: 100%;
     background-color:rgb(229, 224, 220);
@@ -158,63 +296,10 @@ footer, .pie-pagina {
     font-size: 1.2rem;
 }
 
-#toast {
-    display: none;
-    margin: 15px auto;
-    padding: 12px 20px;
-    background-color: rgb(229, 224, 220);
-    color: black;
-    border: 1px solid #e598a5;
-    border-radius: 8px;
-    text-align: center;
-    width: fit-content;
-    font-weight: bold;
-
-}
-/* Botón para bloquear/desbloquear colores */
-.lock-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 30px;
-    height: 30px;
-    padding: 0;
-    border-radius: 50%;
-    background-color: transparent;
-    font-size: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.lock-button:hover {
-    transform: scale(1.1);
-    
-}
-
-/* Necesario para poder posicionar el botón */
-.color-card {
-    position: relative;
-}
-
-/* Indicador visual de bloqueo */
-.color-card.bloqueado::after {
-    content: "Bloqueado";
-    position: absolute;
-    top: 55px;
-    right: 10px;
-    color: rgb(229, 224, 220);
-    padding: 4px 8px;
-    border-radius: 6px;
-    font-family: sans-serif;
-    font-size: 12px;
-    font-weight: bold;
-}
 
 
-/* Tablets */
+/*----- Tablet ------ */
+
 @media (max-width: 768px){
 
     .menu-paleta{
@@ -236,7 +321,7 @@ footer, .pie-pagina {
     }
 }
 
-/* Celulares */
+/*---- Celulares ----*/
 @media (max-width: 480px) {
 
     body{
