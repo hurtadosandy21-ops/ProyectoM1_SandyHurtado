@@ -2,27 +2,20 @@ const btnGenerar = document.getElementById("btn-Generar");
 const selectCantidad = document.getElementById("select-Cantidad");
 const selectFormato = document.getElementById("select-Formato");
 const contenedor = document.getElementById("contenedor");
-
 const btnGuardar = document.getElementById("btn-Guardar");
+const contenedorGuardadas = document.getElementById("paletas-Guardadas");
+const btnMostrarGuardadas = document.getElementById("btn-MostrarGuardadas");
+const listaGuardadas = document.getElementById("lista-Guardadas");
 
-const contenedorGuardadas =
-    document.getElementById("paletas-Guardadas");
-
-const btnMostrarGuardadas =
-    document.getElementById("btn-MostrarGuardadas");
-
-const listaGuardadas =
-    document.getElementById("lista-Guardadas");
-
+// Variable global para recordar qué paleta se quiere borrar temporalmente
+let idPaletaPorEliminar = null;
 
 function getRandomHex() {
     const letters = "0123456789ABCDEF";
     let color = "#";
-
     for (let i = 0; i < 6; i++) {
         color += letters[Math.floor(Math.random() * 16)];
     }
-
     return color;
 }
 
@@ -30,101 +23,80 @@ function getRandomHSL() {
     const h = Math.floor(Math.random() * 360);
     const s = Math.floor(Math.random() * 50) + 40;
     const l = Math.floor(Math.random() * 50) + 40;
-
-    // Cambio de fórmula, para generar mejores colores y que sean más visibles en la paleta
-
     return `hsl(${h}, ${s}%, ${l}%)`;
 }
 
-// Genera un color según el formato seleccionado
 function generarColor() {
     const formato = selectFormato.value;
-
-    return formato === "HEX"
-        ? getRandomHex()
-        : getRandomHSL();
+    return formato === "HEX" ? getRandomHex() : getRandomHSL();
 }
 
-// Generar la paleta
-function generarPaleta() {
+// ESCANEA LA PANTALLA Y GUARDA LOS CANDADOS AL INSTANTE
+function guardarCandadosEnLocalStorage() {
     if (!contenedor) return;
-
-    const cantidad = parseInt(selectCantidad.value, 10);
-
-    // Guardamos los colores que estaban bloqueados
-    const tarjetasAnteriores = [...contenedor.querySelectorAll(".color-card")];
-
-    const coloresBloqueados = tarjetasAnteriores.map((card) => {
+    const tarjetas = [...contenedor.querySelectorAll(".color-card")];
+    
+    const estadoActual = tarjetas.map((card) => {
         return {
             color: card.dataset.color,
             bloqueado: card.classList.contains("bloqueado")
         };
     });
+    
+    localStorage.setItem("estadoBlockedActuales", JSON.stringify(estadoActual));
+}
 
-    // Limpiamos el contenedor
+// RESTAURA LOS COLORES RESPALDADOS CUANDO SE REGRESA A LA WEB
+function cargarCandadosDesdeLocalStorage() {
+    if (!contenedor) return;
+    const guardados = localStorage.getItem("estadoBlockedActuales");
+    
+    if (guardados) {
+        const coloresResaltados = JSON.parse(guardados);
+        selectCantidad.value = coloresResaltados.length;
+        construirContenedorPaleta(coloresResaltados);
+    } else {
+        generarPaleta();
+    }
+}
+
+// RENDERIZA LAS TARJETAS RESPETANDO CUALQUIER PROCEDENCIA
+function construirContenedorPaleta(arregloColores) {
     contenedor.innerHTML = "";
 
-    for (let i = 0; i < cantidad; i++) {
+    arregloColores.forEach((colorData, i) => {
+        const colorValue = colorData.color;
 
-        let colorValue;
-
-        // Si existe un color bloqueado en esta posición,
-        // lo mantenemos
-        if (
-            coloresBloqueados[i] &&
-            coloresBloqueados[i].bloqueado
-        ) {
-            colorValue = coloresBloqueados[i].color;
-        } else {
-            colorValue = generarColor();
-        }
-
-        // Crear tarjeta
         const colorCard = document.createElement("div");
         colorCard.classList.add("color-card");
-
         colorCard.style.backgroundColor = colorValue;
-
-        // Guardamos el color dentro de la tarjeta
         colorCard.dataset.color = colorValue;
 
-        // Texto del color
         const colorText = document.createElement("span");
         colorText.textContent = colorValue;
 
-        // Texto que aparece al pasar el mouse
         const copyHint = document.createElement("small");
         copyHint.textContent = "Clic para copiar";
         copyHint.classList.add("copy-hint");
 
-
-        // Evento para copiar el color
         colorCard.addEventListener("click", async () => {
             try {
                 await navigator.clipboard.writeText(colorValue);
-
                 copyHint.textContent = "¡Copiado! ✓";
                 copyHint.classList.add("copiado");
-
                 setTimeout(() => {
                     copyHint.textContent = "Clic para copiar";
                     copyHint.classList.remove("copiado");
                 }, 1500);
-
             } catch (error) {
                 copyHint.textContent = "No se pudo copiar";
             }
         });
 
-        // Botón de bloqueo
         const lockButton = document.createElement("button");
         lockButton.classList.add("lock-button");
 
-        // Comprobar si esta tarjeta estaba bloqueada
-        if (
-            coloresBloqueados[i] &&
-            coloresBloqueados[i].bloqueado
-        ) {
+        if (colorData.bloqueado) {
             colorCard.classList.add("bloqueado");
             lockButton.textContent = "🔒";
             lockButton.title = "Desbloquear color";
@@ -133,12 +105,8 @@ function generarPaleta() {
             lockButton.title = "Bloquear color";
         }
 
-        // Evento del botón
         lockButton.addEventListener("click", (event) => {
-
-            // Evita que el click haga otras acciones
             event.stopPropagation();
-
             colorCard.classList.toggle("bloqueado");
 
             if (colorCard.classList.contains("bloqueado")) {
@@ -148,82 +116,90 @@ function generarPaleta() {
                 lockButton.textContent = "🔓";
                 lockButton.title = "Bloquear color";
             }
+            
+            guardarCandadosEnLocalStorage();
         });
 
-        // Agregamos elementos a la tarjeta
         colorCard.appendChild(lockButton);
         colorCard.appendChild(colorText);
         colorCard.appendChild(copyHint);
-
-        // Agregamos tarjeta al contenedor
         contenedor.appendChild(colorCard);
-    }
+    });
 }
 
-// Uso de toast para un anuncio de paleta generada
+function generarPaleta() {
+    if (!contenedor) return;
+
+    const cantidad = parseInt(selectCantidad.value, 10);
+    const tarjetasAnteriores = [...contenedor.querySelectorAll(".color-card")];
+
+    const coloresBloqueados = tarjetasAnteriores.map((card) => {
+        return {
+            color: card.dataset.color,
+            bloqueado: card.classList.contains("bloqueado")
+        };
+    });
+
+    const nuevosColores = [];
+
+    for (let i = 0; i < cantidad; i++) {
+        let colorValue;
+        if (coloresBloqueados[i] && coloresBloqueados[i].bloqueado) {
+            colorValue = coloresBloqueados[i].color;
+            nuevosColores.push({ color: colorValue, bloqueado: true });
+        } else {
+            colorValue = generarColor();
+            nuevosColores.push({ color: colorValue, bloqueado: false });
+        }
+    }
+
+    construirContenedorPaleta(nuevosColores);
+    guardarCandadosEnLocalStorage();
+    mostrarToast("¡Paleta Generada!");
+}
+
+// TOAST FLOTANTE OPTIMIZADO (USA OPACIDAD, EVITA CUALQUIER SALTO DE ELEMENTOS)
 function mostrarToast(mensaje = "¡Paleta Generada!") {
     const toast = document.getElementById("toast");
-
     if (!toast) return;
 
     toast.textContent = mensaje;
-    toast.style.display = "block";
+    
+    // Lo hace visible flotando en pantalla
+    toast.style.opacity = "1";
+    toast.style.visibility = "visible";
 
     setTimeout(() => {
-        toast.style.display = "none";
-        toast.textContent = "¡Paleta Generada!";
-    }, 1000);
+        // Se desvanece en su lugar sin alterar los píxeles de los contenedores
+        toast.style.opacity = "0";
+        toast.style.visibility = "hidden";
+    }, 1500);
 }
 
-// Obtener las paletas guardadas
 function obtenerPaletasGuardadas() {
-
     let paletas = [];
-
     try {
-        paletas =
-            JSON.parse(
-                localStorage.getItem("paletasGuardadas")
-            ) || [];
+        paletas = JSON.parse(localStorage.getItem("paletasGuardadas")) || [];
     } catch (error) {
         paletas = [];
     }
-
-    // Eliminamos las paletas antiguas que tengan una estructura incorrecta
     paletas = paletas.filter((paleta) => {
-
         return (
             paleta &&
             paleta.id &&
             Array.isArray(paleta.colores) &&
             paleta.colores.length > 0 &&
-            paleta.colores.every(
-                (colorData) =>
-                    colorData &&
-                    colorData.color
-            )
+            paleta.colores.every((colorData) => colorData && colorData.color)
         );
     });
-
-    // Guardamos nuevamente solo las paletas válidas
-    localStorage.setItem(
-        "paletasGuardadas",
-        JSON.stringify(paletas)
-    );
-
+    localStorage.setItem("paletasGuardadas", JSON.stringify(paletas));
     return paletas;
 }
 
-// Guardar la paleta actual
 function guardarPaleta() {
-
     const tarjetas = [...contenedor.querySelectorAll(".color-card")];
+    if (tarjetas.length === 0) return;
 
-    if (tarjetas.length === 0) {
-        return;
-    }
-
-    // Obtener los colores actuales
     const colores = tarjetas.map((card) => {
         return {
             color: card.dataset.color,
@@ -232,324 +208,132 @@ function guardarPaleta() {
     });
 
     const paletas = obtenerPaletasGuardadas();
-
-    // Crear nueva paleta
     const nuevaPaleta = {
         id: Date.now(),
         colores: colores,
         formato: selectFormato.value
     };
 
-    // Agregar la nueva paleta
     paletas.push(nuevaPaleta);
-
-    // Guardar en LocalStorage
-    localStorage.setItem(
-        "paletasGuardadas",
-        JSON.stringify(paletas)
-    );
-
-    // Actualizar menú
+    localStorage.setItem("paletasGuardadas", JSON.stringify(paletas));
     mostrarPaletasGuardadas();
-
     mostrarToast("¡Paleta guardada!");
 }
 
-// Mostrar las paletas guardadas en el menú
+// CONTROL DE PALETAS GUARDADAS (REPARADO Y CONECTADO)
 function mostrarPaletasGuardadas() {
-
     const paletas = obtenerPaletasGuardadas();
-
     listaGuardadas.innerHTML = "";
 
-    // Si no hay paletas, ocultamos el menú
     if (paletas.length === 0) {
         listaGuardadas.classList.remove("abierto");
         return;
     }
 
-    // Crear las opciones
     paletas.forEach((paleta) => {
-
         const item = document.createElement("div");
         item.classList.add("paleta-Guardadas");
 
-
-        // Vista previa de los colores de la paleta
         const vistaColores = document.createElement("div");
         vistaColores.classList.add("vista-colores");
 
-
-        // Crear los pequeños recuadros de color
         paleta.colores.forEach((colorData) => {
-
             const colorMini = document.createElement("div");
-
             colorMini.classList.add("color-mini");
-
-            colorMini.style.backgroundColor =
-                colorData.color;
-
-            colorMini.title =
-                colorData.color;
-
+            colorMini.style.backgroundColor = colorData.color;
+            colorMini.title = colorData.color;
             vistaColores.appendChild(colorMini);
         });
 
-
-        // Cargar la paleta seleccionada
+        // Evento para CARGAR la paleta al hacer clic en los cuadritos
         vistaColores.addEventListener("click", () => {
-
-            cargarPaleta(paleta.id);
-
-            listaGuardadas.classList.remove(
-                "abierto"
-            );
+            construirContenedorPaleta(paleta.colores);
+            guardarCandadosEnLocalStorage();
+            listaGuardadas.classList.remove("abierto");
         });
 
+        // TU BOTÓN "✕" EXISTENTE DENTRO DEL DESPLEGABLE
+        const botonEliminar = document.createElement("button");
+        botonEliminar.classList.add("eliminar-paleta");
+        botonEliminar.textContent = "✕";
+        botonEliminar.title = "Eliminar paleta";
 
-        // Botón para eliminar la paleta
-        const btnEliminar =
-            document.createElement("button");
+        // Evento para ELIMINAR la paleta al hacer clic en la equis
+        botonEliminar.addEventListener("click", (event) => {
+            event.stopPropagation(); // Evita que se cargue la paleta de fondo
 
-        btnEliminar.classList.add(
-            "eliminar-paleta"
-        );
+            idPaletaPorEliminar = paleta.id;
 
-        btnEliminar.textContent = "✕";
+            // REVISAR PREFERENCIA DEL USUARIO
+            const omitirPregunta = localStorage.getItem("omitirConfirmacionBorrado") === "true";
 
-        btnEliminar.title =
-            "Eliminar paleta";
-
-
-        // Evento para eliminar la paleta
-        btnEliminar.addEventListener(
-            "click",
-            (event) => {
-
-                // Evita que se cargue la paleta
-                event.stopPropagation();
-
-                eliminarPaleta(paleta.id);
+            if (omitirPregunta) {
+                ejecutarBorradoConfirmado();
+            } else {
+                const modal = document.getElementById("modal-confirmacion");
+                if (modal) {
+                    document.getElementById("chk-no-mostrar").checked = false;
+                    modal.classList.add("activo");
+                } else {
+                    console.error("Error: No se encontró el elemento HTML 'modal-confirmacion'");
+                }
             }
-        );
+        });
 
-
+        // Ensamblado correcto de componentes
         item.appendChild(vistaColores);
-        item.appendChild(btnEliminar);
-
+        item.appendChild(botonEliminar);
         listaGuardadas.appendChild(item);
     });
 }
 
-// Cargar una paleta guardada
-// Cargar una paleta guardada
-function cargarPaleta(id) {
+// LOGICA ENCARGADA DEL BORRADO COMPLETO TRAS CONFIRMAR
+function ejecutarBorradoConfirmado() {
+    if (!idPaletaPorEliminar) return;
 
-    const paletas = obtenerPaletasGuardadas();
+    let paletasActuales = obtenerPaletasGuardadas();
+    paletasActuales = paletasActuales.filter(p => p.id !== idPaletaPorEliminar);
+    localStorage.setItem("paletasGuardadas", JSON.stringify(paletasActuales));
 
-    const paleta = paletas.find(
-        (paleta) => paleta.id === Number(id)
-    );
-
-    if (
-        !paleta ||
-        !Array.isArray(paleta.colores) ||
-        paleta.colores.length === 0
-    ) {
-        return;
+    const casillaCheck = document.getElementById("chk-no-mostrar");
+    if (casillaCheck && casillaCheck.checked) {
+        localStorage.setItem("omitirConfirmacionBorrado", "true");
     }
 
-    // Limpiamos el contenedor
-    contenedor.innerHTML = "";
+    mostrarPaletasGuardadas();
+    mostrarToast("¡Paleta eliminada!");
+    idPaletaPorEliminar = null;
+}
 
-    // Cambiar el formato
-    selectFormato.value = paleta.formato;
+// INICIALIZADORES GENERALES Y MANEJO DE LOS BOTONES SÍ/NO DEL MODAL
+document.addEventListener("DOMContentLoaded", () => {
+    cargarCandadosDesdeLocalStorage();
 
-    // Cambiar la cantidad
-    selectCantidad.value = paleta.colores.length;
+    const modal = document.getElementById("modal-confirmacion");
+    const btnSi = document.getElementById("btn-modal-si");
+    const btnNo = document.getElementById("btn-modal-no");
 
-    // Crear nuevamente las tarjetas
-    paleta.colores.forEach((colorData) => {
-
-        const colorCard = document.createElement("div");
-
-        colorCard.classList.add("color-card");
-
-        colorCard.style.backgroundColor =
-            colorData.color;
-
-        // Guardamos el color dentro de la tarjeta
-        colorCard.dataset.color =
-            colorData.color;
-
-        // Comprobar si el color estaba bloqueado
-        if (colorData.bloqueado) {
-            colorCard.classList.add("bloqueado");
-        }
-
-        // Texto del color
-        const colorText = document.createElement("span");
-
-        colorText.textContent =
-            colorData.color;
-
-        // Texto que aparece al pasar el mouse
-        const copyHint = document.createElement("small");
-
-        copyHint.textContent =
-            "Clic para copiar";
-
-        copyHint.classList.add("copy-hint");
-
-        // Evento para copiar el color
-        colorCard.addEventListener("click", async () => {
-
-            try {
-
-                await navigator.clipboard.writeText(
-                    colorData.color
-                );
-
-                copyHint.textContent =
-                    "¡Copiado! ✓";
-
-                copyHint.classList.add("copiado");
-
-                setTimeout(() => {
-
-                    copyHint.textContent =
-                        "Clic para copiar";
-
-                    copyHint.classList.remove(
-                        "copiado"
-                    );
-
-                }, 1500);
-
-            } catch (error) {
-
-                copyHint.textContent =
-                    "No se pudo copiar";
-            }
+    if (btnSi && btnNo && modal) {
+        btnSi.addEventListener("click", () => {
+            modal.classList.remove("activo");
+            ejecutarBorradoConfirmado();
         });
 
-        // Botón de bloqueo
-        const lockButton =
-            document.createElement("button");
-
-        lockButton.classList.add(
-            "lock-button"
-        );
-
-        if (colorData.bloqueado) {
-
-            lockButton.textContent =
-                "🔒";
-
-            lockButton.title =
-                "Desbloquear color";
-
-        } else {
-
-            lockButton.textContent =
-                "🔓";
-
-            lockButton.title =
-                "Bloquear color";
-        }
-
-        // Evento del botón
-        lockButton.addEventListener(
-            "click",
-            (event) => {
-
-                // Evita que el click haga otras acciones
-                event.stopPropagation();
-
-                colorCard.classList.toggle(
-                    "bloqueado"
-                );
-
-                if (
-                    colorCard.classList.contains(
-                        "bloqueado"
-                    )
-                ) {
-
-                    lockButton.textContent =
-                        "🔒";
-
-                    lockButton.title =
-                        "Desbloquear color";
-
-                } else {
-
-                    lockButton.textContent =
-                        "🔓";
-
-                    lockButton.title =
-                        "Bloquear color";
-                }
-            }
-        );
-
-        // Agregamos elementos a la tarjeta
-        colorCard.appendChild(lockButton);
-
-        colorCard.appendChild(colorText);
-
-        colorCard.appendChild(copyHint);
-
-        // Agregamos tarjeta al contenedor
-        contenedor.appendChild(colorCard);
-    });
-}
-// Eliminar una paleta
-function eliminarPaleta(id) {
-
-    const paletas = obtenerPaletasGuardadas();
-
-    // Eliminamos la paleta seleccionada
-    const nuevasPaletas = paletas.filter(
-        (paleta) => paleta.id !== Number(id)
-    );
-
-    // Guardamos nuevamente las paletas
-    localStorage.setItem(
-        "paletasGuardadas",
-        JSON.stringify(nuevasPaletas)
-    );
-
-    // Actualizamos el menú
-    mostrarPaletasGuardadas();
-
-    // Si ya no quedan paletas, cerramos el menú
-    if (nuevasPaletas.length === 0) {
-        listaGuardadas.classList.remove("abierto");
+        btnNo.addEventListener("click", () => {
+            modal.classList.remove("activo");
+            idPaletaPorEliminar = null;
+        });
     }
-}
-// Botón generar
-btnGenerar.addEventListener("click", () => {
-    generarPaleta();
-    mostrarToast();
+
+    if (btnMostrarGuardadas) {
+        btnMostrarGuardadas.addEventListener("click", () => {
+            listaGuardadas.classList.toggle("abierto");
+            if (listaGuardadas.classList.contains("abierto")) {
+                mostrarPaletasGuardadas();
+            }
+        });
+    }
 });
 
-// Botón guardar
-btnGuardar.addEventListener("click", () => {
-    guardarPaleta();
-});
-
-// Abrir y cerrar el menú de paletas guardadas
-
-btnMostrarGuardadas.addEventListener("click", () => {
-
-    listaGuardadas.classList.toggle("abierto");
-
-});
-
-// Mostrar paletas guardadas al cargar la página
-mostrarPaletasGuardadas();
-
-// Generar paleta inicial
-generarPaleta();
+btnGenerar.addEventListener("click", generarPaleta);
+btnGuardar.addEventListener("click", guardarPaleta);

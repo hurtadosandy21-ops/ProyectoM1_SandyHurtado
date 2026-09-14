@@ -11,7 +11,7 @@
 <body>
 
     <header class="header-blob">
-        <h1>Generador de paleta</h1>
+        <h1>Generador de Paletas</h1>
     </header>
 
     <main>
@@ -105,6 +105,27 @@
         </div>
 
     </footer>
+    <!-- =======================================================
+         MODAL PERSONALIZADO DE CONFIRMACIÓN PARA ELIMINAR 
+         ======================================================= -->
+    <div id="modal-confirmacion" class="modal-overlay">
+        <div class="modal-content">
+            <h3>¿Estás seguro?</h3>
+            <p>¿Realmente deseas eliminar esta paleta de colores?</p>
+            
+            <!-- Casilla de verificación No volver a preguntar -->
+            <label class="modal-checkbox-label">
+                <input type="checkbox" id="chk-no-mostrar">
+                <span>No volver a preguntar</span>
+            </label>
+
+            <!-- Botones de Acción -->
+            <div class="modal-botones">
+                <button id="btn-modal-si" class="btn-modal btn-si">Sí, eliminar</button>
+                <button id="btn-modal-no" class="btn-modal btn-no">No</button>
+            </div>
+        </div>
+    </div>
 
     <script src="app.js"></script>
 
