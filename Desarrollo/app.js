@@ -548,8 +548,6 @@ btnMostrarGuardadas.addEventListener("click", () => {
 
 });
 
-
-
 // Mostrar paletas guardadas al cargar la página
 mostrarPaletasGuardadas();
 

@@ -24,7 +24,6 @@ header{
     background-image: -moz-linear-gradient(10% 20% 50% 30%);
     font-size: clamp(1.8rem, 4vw, 3rem); 
 }
-/*---- MENÚ DE LA PALETA ----*/
 
 /*---- MENÚ DE LA PALETA ----*/
 
@@ -272,6 +271,8 @@ body{
     margin:0 auto;
     max-width: 1200px;
     padding: 20px;
+    
+    
 }
 
 /*---- TOAST ----*/
@@ -475,56 +476,178 @@ footer, .pie-pagina {
 .enlace-contacto .icono {
     font-size: 1.2rem;
 }
-
+html, body {
+    height: auto !important;
+    min-height: 100% !important;
+    position: relative !important; /* Base necesaria para el truco del footer */
+}
 
 
 /*----- Tablet ------ */
 
-@media (max-width: 768px){
+@media (max-width: 1024px){
 
-    .menu-paleta{
+    body {
+        /* Dejamos un colchón físico abajo en el cuerpo idéntico al alto total que ocupará el footer */
+        padding-bottom: 220px !important; 
+    }
+    header {
+        width: 100% !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
         flex-direction: column;
-        gap: 10px;
     }
-    button,select{
-        width: 100%;
-        max-width: 300px;
-    }
-
-    .redes-contacto{
-       flex-direction: column;
-       gap: 20px;
+    .menu-paleta {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        gap: 12px !important;
+        width: 100% !important;
+        margin: 20px auto !important;
     }
 
-    header{
-       text-align: center;
+    .opciones-paleta {
+        flex-direction: column !important;
+        width: 100% !important;
+        gap: 12px !important;
+    }
+
+    button, .btn-guardadas, #btn-Generar, select {
+        width: 100% !important;
+        max-width: 280px !important;
+        min-width: 280px !important;
+        padding: 12px 20px !important;
+        box-sizing: border-box !important;
+    }
+
+    footer, .pie-pagina {
+        margin-top: 60px !important; 
+        /* Añadimos un colchón de 120px abajo para que puedas subir la pantalla mucho más */
+        padding: 20px 10px 180px 10px !important; 
+        width: 100% !important;
+        display: block !important; /* Asegura que se comporte como un bloque independiente */
+        clear: both !important;    /* Rompe cualquier elemento flotante anterior */
+    }
+
+
+    /* Transformamos el contenedor de las redes en una rejilla de 2 columnas */
+    .redes-contacto {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important; /* Crea exactamente dos columnas iguales lado a lado */
+        gap: 10px !important; /* Espacio fijo entre los dos botones */
+        width: 100% !important;
+        max-width: 320px !important; /* Limita el ancho total del bloque en el centro */
+        margin: 0 auto !important; /* Centra la cuadrícula en la pantalla */
+    }
+
+    /* Forzamos a los botones a adaptarse al tamaño de su celda de la rejilla */
+    .enlace-contacto {
+        width: 100% !important; /* Ocupa todo el espacio de su media columna */
+        max-width: 100% !important;
+        min-width: 0 !important; /* Rompe bloqueos previos de tamaño */
+        padding: 10px 5px !important; /* Reduce grosor vertical */
+        font-size: 0.85rem !important; /* Letra compacta para que no se desborde */
+        justify-content: center !important;
+        display: flex !important;
+        align-items: center !important;
+        box-sizing: border-box !important;
     }
 }
+
+
 
 /*---- Celulares ----*/
 @media (max-width: 480px) {
 
-    body{
-        padding: 10px;
+    body {
+        padding: 10px !important; 
+        overflow-x: hidden !important; 
     }
 
-    header{
-        font-size: 1.4rem;
-        text-align: center;
-    }
-    #contenedor{
-        grid-template-columns: 1fr;
-    }
-
-    .menu-paleta{
-        width: 100%;
+    /* FORZAR ACOMODO VERTICAL ABSOLUTO */
+    .menu-paleta, .opciones-paleta {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 15px !important;
+        width: 100% !important;
     }
 
-    button,select{
-       width: 100%;
+    /* Separar de manera individual cada contenedor de botón */
+    .button, .guardar-container, .guardadas, .opcion {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
+        margin: 5px 0 !important;
     }
 
-    .redes-contacto{
-        gap: 15px;
+    /* Homologar el tamaño de todos los controles visuales */
+    button, .btn-guardadas, #btn-Generar, select {
+        width: 100% !important;
+        max-width: 280px !important;
+        min-width: 280px !important; /* Evita que colapsen o se encojan */
+        padding: 12px 20px !important;
+        box-sizing: border-box !important;
+        text-align: center !important;
+    }
+
+    /* Mantiene el candado perfectamente circular */
+    .lock-button {
+        opacity: 1 !important;
+        visibility: visible !important;
+        width: 36px !important;
+        height: 36px !important;
+        min-width: 36px !important;
+        min-height: 36px !important;
+        border-radius: 50% !important;
+        padding: 0 !important;
+    }
+
+    /* Una sola tarjeta de color por fila */
+    #contenedor {
+        grid-template-columns: 1fr !important;
+        width: 100% !important;
+        padding: 10px 0 !important;
+    }
+    
+    /* SOLUCIÓN DE DESLIZAMIENTO DEL FOOTER */
+        /* ---- AJUSTE DE VISIBILIDAD DE FOOTER ---- */
+    footer, .pie-pagina {
+        margin-top: 60px !important; 
+        /* Añadimos un colchón de 120px abajo para que puedas subir la pantalla mucho más */
+        padding: 20px 10px 180px 10px !important; 
+        width: 100% !important;
+        display: block !important; /* Asegura que se comporte como un bloque independiente */
+        clear: both !important;    /* Rompe cualquier elemento flotante anterior */
+    }
+
+
+    /* Transformamos el contenedor de las redes en una rejilla de 2 columnas */
+    .redes-contacto {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important; /* Crea exactamente dos columnas iguales lado a lado */
+        gap: 10px !important; /* Espacio fijo entre los dos botones */
+        width: 100% !important;
+        max-width: 320px !important; /* Limita el ancho total del bloque en el centro */
+        margin: 0 auto !important; /* Centra la cuadrícula en la pantalla */
+    }
+
+    /* Forzamos a los botones a adaptarse al tamaño de su celda de la rejilla */
+    .enlace-contacto {
+        width: 100% !important; /* Ocupa todo el espacio de su media columna */
+        max-width: 100% !important;
+        min-width: 0 !important; /* Rompe bloqueos previos de tamaño */
+        padding: 10px 5px !important; /* Reduce grosor vertical */
+        font-size: 0.85rem !important; /* Letra compacta para que no se desborde */
+        justify-content: center !important;
+        display: flex !important;
+        align-items: center !important;
+        box-sizing: border-box !important;
     }
 }
+
+
+
