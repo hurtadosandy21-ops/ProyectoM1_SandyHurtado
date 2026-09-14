@@ -1,17 +1,20 @@
 ## 🏗️ Estructura de la App
 
 ```text
+
 ProyectoM1_SandyHurtado/
-│
-├── index.html
-├── style.css
-├── script.js
-│
+├── Desarrollo/
+│   ├── index.html
+│   ├── style.css
+│   └── app.js            
+├── Documentacion/
+│   ├── estructura.md
+│   ├── IA.md
+│   └── Imagenes.md        
 ├── assets/
-│   ├── img/
-│   └── screenshots/
-│
-└── README.md
+│   └── img-screenshots/
+└── README.md              
+
 ```
 
 ---
@@ -55,4 +58,4 @@ Contiene capturas de pantalla utilizadas en la documentación del proyecto.
 ### README.md
 Documento que contiene toda la información y documentación del proyecto.
 
-[Volver ](../Documentacion/README.md)
+[Volver ](../README.md)

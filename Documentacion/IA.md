@@ -327,6 +327,81 @@ Esta información fue utilizada para explicar:
 
 ---
 
+## 📱 Prompt 8: Diseño responsivo universal y adaptación multi-dispositivo
+
+### 🎯 Objetivo
+Garantizar que la aplicación se visualice de forma perfecta, simétrica y compacta en cualquier tamaño de pantalla (Computadoras, Laptops, Tablets, iPad Mini/Pro, Surface y Celulares).
+
+### 💬 Prompt
+```text
+Ayúdame a optimizar el CSS de mi aplicación de paletas de colores para que sea 100% responsiva. Necesito que en laptops y tablets los menús de Cantidad, Formato y botones de control se alineen de forma horizontal compacta para ahorrar espacio vertical, y que en celulares las tarjetas de colores se muestren en dos columnas. Además, corrige el estiramiento de los botones redondos (candados y equis de borrado) y asegúrate de que el footer no se corte ni se mueva en pantallas táctiles grandes.
+```
+
+### ✅ Resultado obtenido
+La IA sugirió estructurar Media Queries aisladas por rangos estrictos (`1366px` y `480px`) utilizando Flexbox horizontal fluido, Grid adaptativo y dimensiones fijas para evitar la deformación de componentes elípticos.
+
+### 💻 Ejemplo sugerido
+```css
+@media (max-width: 1366px) {
+    .menu-paleta { display: flex; flex-direction: row; flex-wrap: wrap; gap: 25px; }
+    .lock-button { width: 38px; height: 38px; min-width: 38px; border-radius: 50%; }
+}
+@media (max-width: 480px) {
+    #contenedor { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+}
+```
+
+### 🔧 Aplicación en el proyecto
+Se reestructuró la maquetación final del archivo `style.css` logrando:
+- Menú superior ejecutivo y horizontal en tablets/laptops que ahorra espacio vertical.
+- Cuadrícula compacta de 2 columnas de colores en celulares para reducir el scroll táctil.
+- Botones de candados y borrado perfectamente esféricos y simétricos.
+- Footer horizontal fijo e inmóvil en la base de la pantalla de iPads y Surface Pro.
+
+### 📚 Aprendizaje obtenido
+- Uso avanzado de combinaciones Flexbox (`flex-direction: row`) y CSS Grid (`1fr 1fr`).
+- Blindaje de figuras geométricas mediante dimensiones fijas (`width`/`height`) y `min-width` / `max-width`.
+- Control de desbordamientos con selectores estrictos y propiedades de visualización móvil.
+
+---
+
+## 🛠️ Prompt 9: Experiencia de usuario avanzada (Modal interactivo y persistencia de candados)
+
+### 🎯 Objetivo
+Mejorar la usabilidad de la app añadiendo alertas fluidas sin saltos de pantalla, persistencia de estados de bloqueo y confirmaciones con preferencias del usuario.
+
+### 💬 Prompt
+```text
+Ayúdame a programar en JavaScript y CSS un modal flotante personalizado para confirmar la eliminación de una paleta, que incluya una casilla para "No volver a preguntar" que guarde la decisión en localStorage. También necesito que los colores bloqueados con candado permanezcan activos al refrescar la página, y que los mensajes Toast cambien dinámicamente (generada, guardada, eliminada) flotando suavemente sin mover o empujar el resto de los componentes HTML.
+```
+
+### ✅ Resultado obtenido
+La IA proporcionó la lógica para interceptar clics, almacenar estados clave de configuración en el disco duro local, aislar la visibilidad de componentes con opacidad de CSS y transformar formatos dinámicos en vivo.
+
+### 💻 Ejemplo sugerido
+```javascript
+// LocalStorage para candados activos
+localStorage.setItem("estadoBlockedActuales", JSON.stringify(estadoActual));
+
+// Control de visibilidad del Toast sin alterar píxeles físicos
+toast.style.opacity = "1";
+toast.style.visibility = "visible";
+```
+
+### 🔧 Aplicación en el proyecto
+Se integraron flujos lógicos en el archivo `app.js` y `style.css` que permiten:
+- Auto-guardado reactivo de candados que persisten perfectamente al actualizar el navegador.
+- Ventana de confirmación flotante centrado (`position: fixed`) que procesa la memoria del usuario.
+- Notificaciones Toast flotantes independientes que se desvanecen en el aire sin causar saltos de línea en el DOM.
+- Conversión de formatos en tiempo real (HEX a HSL) manteniendo los colores fijos en pantalla.
+
+### 📚 Aprendizaje obtenido
+- Manipulación de estados de visibilidad combinando `opacity`, `visibility` y `pointer-events`.
+- Manejo de árboles de datos complejos y banderas booleanas en `localStorage`.
+- Control y detención de la propagación de eventos en elementos anidados con `event.stopPropagation()`.
+- Sincronización exacta de variables e interactividad entre JavaScript, HTML y hojas de estilo.
+
+
 # ✅ Conclusión
 
 La inteligencia artificial fue utilizada como una herramienta de apoyo para:
@@ -342,4 +417,4 @@ Todo el contenido generado mediante IA fue revisado, adaptado y validado antes d
 
 > La implementación final, la lógica de funcionamiento, las mejoras y las decisiones de desarrollo corresponden al trabajo realizado durante la construcción del Generador de Paletas.
 
-[Volver ](../Documentacion/README.md)
+[Volver ](../README.md)

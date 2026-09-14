@@ -334,6 +334,89 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
+// ==========================================================================
+// TRUCO DE CONVERSIÓN DE FORMATOS EN TIEMPO REAL CON EL NAVEGADOR
+// ==========================================================================
+
+function transformarFormatoActual() {
+    if (!contenedor) return;
+    const tarjetas = [...contenedor.querySelectorAll(".color-card")];
+    const nuevoFormato = selectFormato.value; // Lee si eligió "HEX" o "HSL"
+
+    tarjetas.forEach((tarjeta) => {
+        // Obtenemos el color actual real que está pintado en el fondo de la tarjeta
+        const colorBase = tarjeta.style.backgroundColor; 
+        let codigoTransformado = colorBase;
+
+        if (nuevoFormato === "HEX") {
+            // El navegador por defecto entrega el fondo en formato rgb(r, g, b)
+            // Este bloque convierte los números de rgb a su equivalente #HEX de forma limpia
+            const rgb = colorBase.match(/\d+/g);
+            if (rgb) {
+                const hex = "#" + rgb.map(x => {
+                    const hexValue = parseInt(x, 10).toString(16);
+                    return hexValue.length === 1 ? "0" + hexValue : hexValue;
+                }).join("");
+                codigoTransformado = hex.toUpperCase();
+            }
+        } else if (nuevoFormato === "HSL") {
+            // Si el usuario cambia a HSL, convertimos matemáticamente los valores del fondo
+            const rgb = colorBase.match(/\d+/g);
+            if (rgb) {
+                let r = rgb[0] / 255, g = rgb[1] / 255, b = rgb[2] / 255;
+                let max = Math.max(r, g, b), min = Math.min(r, g, b);
+                let h, s, l = (max + min) / 2;
+
+                if (max === min) {
+                    h = s = 0; // Escala de grises
+                } else {
+                    let d = max - min;
+                    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+                    switch (max) {
+                        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+                        case g: h = (b - r) / d + 2; break;
+                        case b: h = (r - g) / d + 4; break;
+                    }
+                    h /= 6;
+                }
+                codigoTransformado = `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
+            }
+        }
+
+        // Actualizamos los datos internos y los textos en pantalla sin alterar la paleta
+        tarjeta.dataset.color = codigoTransformado;
+        const textoSpan = tarjeta.querySelector("span");
+        if (textoSpan) {
+            textoSpan.textContent = codigoTransformado;
+        }
+
+        // RE-VINCULACIÓN DEL EVENTO CLIC: Actualiza el portapapeles para copiar el nuevo formato
+        tarjeta.onclick = async function() {
+            const copyHint = tarjeta.querySelector(".copy-hint");
+            try {
+                await navigator.clipboard.writeText(codigoTransformado);
+                if (copyHint) {
+                    copyHint.textContent = "¡Copiado! ✓";
+                    copyHint.classList.add("copiado");
+                    setTimeout(() => {
+                        copyHint.textContent = "Clic para copiar";
+                        copyHint.classList.remove("copiado");
+                    }, 1500);
+                }
+            } catch (err) {
+                if (copyHint) copyHint.textContent = "No se pudo copiar";
+            }
+        };
+    });
+
+    // Guardamos el cambio de formato en el LocalStorage automático de candados
+    if (typeof guardarCandadosEnLocalStorage === "function") {
+        guardarCandadosEnLocalStorage();
+    }
+}
+
 
 btnGenerar.addEventListener("click", generarPaleta);
 btnGuardar.addEventListener("click", guardarPaleta);
+// Escucha cuando el usuario cambia de HEX a HSL o viceversa en el menú desplegable
+selectFormato.addEventListener("change", transformarFormatoActual);
