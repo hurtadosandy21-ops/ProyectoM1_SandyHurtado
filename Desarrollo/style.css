@@ -185,27 +185,19 @@ nos va a servir para que el usuario identifique el color bloqueado */
     position: absolute;
     top: 10px;
     right: 10px;
-
     width: 40px;
     height: 40px;
-
     padding: 0;
     border: 2px solid #000;
     border-radius: 50%;
-
     background-color: rgba(255, 255, 255, 0.85);
-
     font-size: 20px;
-
     display: flex;
     justify-content: center;
     align-items: center;
-
     cursor: pointer;
-
     opacity: 0;
     visibility: hidden;
-
     transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
@@ -248,8 +240,9 @@ nos va a servir para que el usuario identifique el color bloqueado */
 .copy-hint {
     position: absolute;
     bottom: 42px;
+    justify-content: center;
     right: 10px;
-    background-color: transparent;
+    background-color: white;
     color: rgb(54, 50, 46);
     padding: 4px 8px;
     border-radius: 6px;
@@ -278,41 +271,30 @@ body{
 }
 
 /*---- TOAST ----*/
-
-
-/*---- TOAST FLOTANTE DEFINITIVO (SIN NINGÚN SALTO NI ESPACIO) ----*/
 #toast {
-    /* Lo despegamos de la estructura interna */
     position: fixed !important; 
-    bottom: 20px; /* Aparecerá flotando en la parte superior (puedes cambiarlo a 'bottom: 20px' si lo prefieres abajo) */
+    bottom: 20px; 
     left: 50%;
-    transform: translateX(-50%); /* Centrado matemático perfecto en cualquier celular/tablet */
-    z-index: 3000; /* Se dibuja por encima de los botones y de las tarjetas */
-
-    /* Estilos estéticos idénticos a tu paleta */
+    transform: translateX(-50%); 
+    z-index: 3000; 
     padding: 10px 20px;
     background-color: rgb(229, 224, 220);
     color: black;
     border: 1px solid #e598a5;
-    border-radius: 20px; /* Bordes redondeados consistentes con tus botones */
+    border-radius: 20px; 
     text-align: center;
     width: max-content;
     max-width: 90%;
     font-weight: bold;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.15); /* Sombra suave para darle volumen al flotar */
-
-    /* Sistema invisible que no ocupa píxeles en el flujo */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.25s ease, visibility 0.25s ease;
 }
-
-
 /*---- MENÚ DE PALETAS GUARDADAS ----*/
 
-/*---- CONTENEDOR PADRE DEL MENÚ ----*/
 .guardadas {
-    position: relative !important; /* Esencial para que la lista flote justo debajo de este botón */
+    position: relative !important; 
     width: fit-content;
     margin: 0;
     display: inline-block;
@@ -321,36 +303,30 @@ body{
 /*---- LISTA DESPLEGABLE FLOTANTE CON SCROLL INTELIGENTE ----*/
 .lista-guardadas {
     display: none;
-    position: absolute !important; /* ¡DESPEGADO DEL FLUJO! Pasa por encima de las tarjetas */
-    top: calc(100% + 5px) !important; /* Se posiciona inmediatamente abajo del botón */
-    right: 0 !important; /* Se alinea perfectamente al borde derecho del botón */
-    
-    /* Dimensiones controladas para ahorrar espacio */
+    position: absolute !important; 
+    top: calc(100% + 5px) !important; 
+    right: 0 !important; 
     width: max-content !important;
     min-width: 290px !important;
     
     /* LIMITACIÓN A 3 PALETAS MÁXIMO CON SCROLL INTERNO */
-    max-height: 180px !important; /* Altura matemática justa para alojar 3 filas de paletas */
+    max-height: 180px !important; 
     overflow-y: auto !important;   /* Activa la barra para subir y bajar solo cuando hay más de 3 paletas */
     overflow-x: hidden !important;  /* Evita movimientos raros hacia los lados */
     
-    /* Estilos visuales consistentes con tu paleta vintage */
+    /* Estilos visuales consistentes */
     padding: 10px !important;
-    background-color: rgb(229, 224, 220) !important; /* Color arena de tu fondo */
+    background-color: rgb(229, 224, 220) !important; 
     border: 1px solid #000 !important;
     border-radius: 12px !important;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important; /* Sombra que le da volumen sobre el fondo */
-    z-index: 1000 !important; /* Prioridad alta para flotar sobre las tarjetas de colores principales */
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25) !important;
+    z-index: 1000 !important; 
 }
-
-/* Cuando el menú recibe la clase .abierto desde JavaScript */
 .lista-guardadas.abierto {
     display: flex !important;
     flex-direction: column !important;
     gap: 8px !important;
 }
-
-/* CADA FILA DE PALETA INDIVIDUAL */
 .paleta-Guardadas {
     display: flex !important;
     align-items: center !important;
@@ -359,10 +335,10 @@ body{
     width: 100% !important;
     padding: 6px 4px !important;
     box-sizing: border-box !important;
-    border-bottom: 1px dashed rgba(0,0,0,0.1) !important; /* Línea divisoria sutil */
+    border-bottom: 1px dashed rgba(0,0,0,0.1) !important; 
 }
 
-/* DISEÑO DE LA BARRA DE DESPLAZAMIENTO (Opcional, para que se vea más bonita) */
+/* DISEÑO DE LA BARRA DE DESPLAZAMIENTO */
 .lista-guardadas::-webkit-scrollbar {
     width: 6px;
 }
@@ -370,43 +346,26 @@ body{
     background: transparent;
 }
 .lista-guardadas::-webkit-scrollbar-thumb {
-    background: rgb(229, 171, 181); /* Tu rosa pastel para la barrita del scroll */
+    background: rgb(229, 171, 181); 
     border-radius: 10px;
 }
-
-
-
 /* Vista de colores */
-
 .vista-colores {
     display: flex;
-
     align-items: center;
-
     gap: 4px;
-
     padding: 3px;
-
     cursor: pointer;
-
     border-radius: 6px;
 }
-
-
 /* Cuadritos pequeños */
-
 .color-mini {
     width: 28px;
     height: 28px;
-
     border-radius: 4px;
-
     border: 1px solid rgba(0, 0, 0, 0.25);
-
     flex-shrink: 0;
 }
-
-
 /* Botón X */
 
 .eliminar-paleta {
@@ -423,8 +382,6 @@ body{
     border: 1px solid #000;
     flex-shrink: 0;
 }
-
-
 /* Efecto al pasar el mouse */
 
 .eliminar-paleta:hover {
@@ -496,12 +453,9 @@ footer, .pie-pagina {
 html, body {
     height: auto !important;
     min-height: 100% !important;
-    position: relative !important; /* Base necesaria para el truco del footer */
+    position: relative !important; 
 }
-/* ==========================================================================
-   ESTILOS GENERALES DE LA CAJA INTERNA DEL MODAL (FUERA DE MEDIA QUERIES)
-   ========================================================================== */
-/* ---- CORRECCIÓN DE ESTADO OCULTO DEL MODAL (REMPLAZAR) ---- */
+/* Estilo de caja modal implementada*/
 .modal-overlay {
     position: fixed !important;
     top: 0 !important;
@@ -514,21 +468,21 @@ html, body {
     display: flex !important;
     justify-content: center !important;
     align-items: center !important;
-    z-index: 999999 !important; /* Por encima de todo */
+    z-index: 999999 !important; 
     
-    /* TRUCO MAESTRO: Completamente invisible e intocable por defecto, pero mantiene su esqueleto */
+    /* Completamente invisible e intocable por defecto, pero mantiene su esqueleto */
     opacity: 0 !important;
     visibility: hidden !important;
     pointer-events: none !important;
     transition: opacity 0.25s ease, visibility 0.25s ease;
 }
 
-/* LA CAJITA BLANCA INTERNA: Mantiene su diseño intacto en cualquier pantalla */
+/* Cajita blanca interna */
 .modal-content {
-    background-color: rgb(229, 224, 220) !important; /* Tu color arena claro */
+    background-color: rgb(229, 224, 220) !important; 
     padding: 24px !important;
     border-radius: 16px !important;
-    border: 2px solid rgb(229, 171, 181) !important; /* Tu rosa pastel de los botones */
+    border: 2px solid rgb(229, 171, 181) !important; 
     text-align: center !important;
     max-width: 300px !important;
     width: 85% !important;
@@ -537,12 +491,10 @@ html, body {
     
     /* Efecto extra: La cajita se encoge a tamaño cero cuando está oculta */
     transform: scale(0) !important;
-    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important; /* Animación pop-up suave */
+    transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important; 
 }
 
-/* ==========================================================================
-   ESTADOS ACTIVOS (CUANDO JAVASCRIPT LOS ENCIENDE)
-   ========================================================================== */
+/* ESTADOS ACTIVOS */
 
 /* La capa oscura se vuelve visible */
 .modal-overlay.activo {
@@ -550,8 +502,7 @@ html, body {
     visibility: visible !important;
     pointer-events: auto !important;
 }
-
-/* ¡AQUÍ ESTÁ LA MAGIA! Cuando el padre se activa, la cajita blanca se agranda a su tamaño real */
+/* Caja se expande*/
 .modal-overlay.activo .modal-content {
     transform: scale(1) !important;
 }
@@ -560,7 +511,7 @@ html, body {
 .modal-content h3 {
     margin-top: 0 !important;
     margin-bottom: 10px !important;
-    color: rgb(169, 61, 88) !important; /* Tu color vino */
+    color: rgb(169, 61, 88) !important; 
     font-size: 1.3rem !important;
     font-family: Georgia, 'Times New Roman', Times, serif !important;
 }
@@ -568,7 +519,7 @@ html, body {
 .modal-content p {
     font-size: 14px !important;
     margin-bottom: 15px !important;
-    color: #333333 !important; /* Texto oscuro totalmente legible */
+    color: #333333 !important; 
     line-height: 1.4 !important;
 }
 
@@ -618,8 +569,13 @@ html, body {
     color: #000000 !important;
 }
 
-
-
+.nueva{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
 
 /*----- Tablet (Max 1024px) ------ */
 @media (max-width: 1366px){
@@ -647,44 +603,39 @@ html, body {
         font-size: 6.5vh !important; 
     }
 
-    /* MENÚ SUPERIOR HORIZONTAL EXCLUSIVO PARA TABLETS */
-        /* ---- 🧠 ¡EL CAMBIO CLAVE!: TARJETAS COMPACTAS PARA TABLETS E IPADS ---- */
+    /* Menú superior */
     #contenedor {
         display: grid !important;
-        /* Forzamos a que entren mínimo 3 o 4 tarjetas por fila reduciendo el ancho mínimo a 130px */
         grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)) !important; 
-        gap: 10px !important; /* Espacio más ajustado entre tarjetas */
+        gap: 10px !important; 
         padding: 10px 0 !important;
         width: 100% !important;
         max-width: 1000px !important;
         margin: 0 auto !important;
     }
-
-    /* Reducimos significativamente la altura de las tarjetas de color */
     .color-card {
         min-height: 95px !important; /* Tarjetas más bajitas para ahorrar espacio vertical */
         padding-bottom: 8px !important;
     }
 
-    /* Ajustamos el tamaño del texto del código del color (HEX/HSL) */
+    /* Ajuste de el tamaño del texto del código del color (HEX/HSL) */
     .color-card span {
         font-size: 0.8rem !important; /* Letra un poco más pequeña para que no se desborde */
         padding: 2px 6px !important;
         bottom: 8px !important;
     }
 
-    /* Ajustamos la posición del botón del candado para que no estorbe */
+    /* Ajustae de posición del botón del candado para que no estorbe */
     .lock-button {
         top: 6px !important;
         right: 6px !important;
-        width: 32px !important; /* Candado ligeramente más compacto */
+        width: 32px !important; 
         height: 32px !important;
         min-width: 32px !important;
         min-height: 32px !important;
         font-size: 14px !important;
     }
 
-    /* Ajuste visual del indicador de bloqueo */
     .color-card.bloqueado::after { 
         top: 30px !important; 
         font-size: 10px !important;
@@ -692,7 +643,6 @@ html, body {
     }
 
 
-    /* Agrupa el texto al lado de su respectivo menú desplegable */
     .opciones-paleta, .format, .opcion {
         display: flex !important;
         flex-direction: row !important; 
@@ -700,14 +650,11 @@ html, body {
         gap: 6px !important;
         width: auto !important; 
     }
-        /* ---- CORRECCIÓN DE ESPACIADO EN HORIZONTAL PARA LAPTOPS Y TABLETS ---- */
     .menu-paleta label {
         white-space: nowrap !important; 
         margin: 0 !important;
         font-size: 14px !important;
     }
-
-    /* Todos los botones y selectores miden lo mismo de alto y tienen un ancho compacto */
     button, .btn-guardadas, #btn-Generar, select {
         width: auto !important;
         min-width: 130px !important; 
@@ -717,7 +664,6 @@ html, body {
         box-sizing: border-box !important;
     }
 
-    /* Mantiene la X rosa del desplegable perfectamente circular */
     .eliminar-paleta {
         width: 28px !important;
         height: 28px !important;
@@ -777,9 +723,7 @@ html, body {
     }
 }
 
-/* ==========================================================================
-   2. OPTIMIZACIÓN EXCLUSIVA SÓLO PARA CELULARES (Max 480px)
-   ========================================================================== */
+/* 2. OPTIMIZACIÓN EXCLUSIVA SÓLO PARA CELULARES (Max 480px)*/
 @media (max-width: 480px) {
     body {
         padding: 10px !important; 
@@ -841,11 +785,8 @@ html, body {
         transform: translateX(-50%) !important; 
         min-width: 260px !important;
     }
-
-    /* 🧠 ¡EL CAMBIO CLAVE!: TARJETAS DE COLORES MÁS PEQUEÑAS DE DOS EN DOS */
     #contenedor {
         display: grid !important;
-        /* Crea exactamente dos columnas de igual tamaño una al lado de la otra */
         grid-template-columns: 1fr 1fr !important; 
         gap: 10px !important; /* Espacio compacto entre tarjetas */
         padding: 15px 0 !important;

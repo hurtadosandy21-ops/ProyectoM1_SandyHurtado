@@ -2,13 +2,17 @@ const btnGenerar = document.getElementById("btn-Generar");
 const selectCantidad = document.getElementById("select-Cantidad");
 const selectFormato = document.getElementById("select-Formato");
 const contenedor = document.getElementById("contenedor");
+
+
 const btnGuardar = document.getElementById("btn-Guardar");
 const contenedorGuardadas = document.getElementById("paletas-Guardadas");
 const btnMostrarGuardadas = document.getElementById("btn-MostrarGuardadas");
 const listaGuardadas = document.getElementById("lista-Guardadas");
 
-// Variable global para recordar qué paleta se quiere borrar temporalmente
-let idPaletaPorEliminar = null;
+const btnNuevaSesion = document.getElementById("btnNuevaSesion");
+
+let origenDelModal = ""; 
+
 
 function getRandomHex() {
     const letters = "0123456789ABCDEF";
@@ -49,13 +53,23 @@ function guardarCandadosEnLocalStorage() {
 // RESTAURA LOS COLORES RESPALDADOS CUANDO SE REGRESA A LA WEB
 function cargarCandadosDesdeLocalStorage() {
     if (!contenedor) return;
+
+    const formatoGuardado = localStorage.getItem("formatoColor");
+
+    if (formatoGuardado) {
+        selectFormato.value = formatoGuardado;
+    }
+
     const guardados = localStorage.getItem("estadoBlockedActuales");
-    
+
     if (guardados) {
-        const coloresResaltados = JSON.parse(guardados);
-        selectCantidad.value = coloresResaltados.length;
-        construirContenedorPaleta(coloresResaltados);
-    } else {
+    const coloresResaltados = JSON.parse(guardados);
+    selectCantidad.value = coloresResaltados.length;
+    construirContenedorPaleta(coloresResaltados);
+
+    transformarFormatoActual();
+    }
+     else {
         generarPaleta();
     }
 }
@@ -158,7 +172,7 @@ function generarPaleta() {
     mostrarToast("¡Paleta Generada!");
 }
 
-// TOAST FLOTANTE OPTIMIZADO (USA OPACIDAD, EVITA CUALQUIER SALTO DE ELEMENTOS)
+// TOAST FLOTANTE OPTIMIZADO: (USA OPACIDAD, EVITA CUALQUIER SALTO DE ELEMENTOS)
 function mostrarToast(mensaje = "¡Paleta Generada!") {
     const toast = document.getElementById("toast");
     if (!toast) return;
@@ -252,30 +266,44 @@ function mostrarPaletasGuardadas() {
             listaGuardadas.classList.remove("abierto");
         });
 
-        // TU BOTÓN "✕" EXISTENTE DENTRO DEL DESPLEGABLE
+        // BOTÓN "✕" EXISTENTE DENTRO DEL DESPLEGABLE
         const botonEliminar = document.createElement("button");
         botonEliminar.classList.add("eliminar-paleta");
         botonEliminar.textContent = "✕";
         botonEliminar.title = "Eliminar paleta";
 
+
         // Evento para ELIMINAR la paleta al hacer clic en la equis
         botonEliminar.addEventListener("click", (event) => {
-            event.stopPropagation(); // Evita que se cargue la paleta de fondo
-
+            event.stopPropagation(); // Evita cargar la paleta
             idPaletaPorEliminar = paleta.id;
 
-            // REVISAR PREFERENCIA DEL USUARIO
-            const omitirPregunta = localStorage.getItem("omitirConfirmacionBorrado") === "true";
+            const modal = document.getElementById("modal-confirmacion");
+            if (!modal) return;
 
+            // Restablecemos el texto original del modal para borrar
+            const parrafoModal = modal.querySelector("p");
+            if (parrafoModal) {
+                parrafoModal.textContent = "¿Realmente deseas eliminar esta paleta de colores?";
+            }
+
+            const omitirPregunta = localStorage.getItem("omitirConfirmacionBorrado") === "true";
             if (omitirPregunta) {
                 ejecutarBorradoConfirmado();
             } else {
-                const modal = document.getElementById("modal-confirmacion");
-                if (modal) {
-                    document.getElementById("chk-no-mostrar").checked = false;
-                    modal.classList.add("activo");
-                } else {
-                    console.error("Error: No se encontró el elemento HTML 'modal-confirmacion'");
+                document.getElementById("chk-no-mostrar").checked = false;
+                modal.classList.add("activo");
+
+                // Asignamos el comportamiento de borrado directo al botón SÍ aquí mismo
+                const btnSi = document.getElementById("btn-modal-si");
+                if (btnSi) {
+                    const nuevoBtnSi = btnSi.cloneNode(true);
+                    btnSi.parentNode.replaceChild(nuevoBtnSi, btnSi);
+                    
+                    nuevoBtnSi.addEventListener("click", () => {
+                        modal.classList.remove("activo");
+                        ejecutarBorradoConfirmado();
+                    });
                 }
             }
         });
@@ -316,13 +344,29 @@ document.addEventListener("DOMContentLoaded", () => {
     if (btnSi && btnNo && modal) {
         btnSi.addEventListener("click", () => {
             modal.classList.remove("activo");
-            ejecutarBorradoConfirmado();
+            
+            if (origenDelModal === "lista"){
+                ejecutarBorradoConfirmado();
+            }else if (origenDelModal === "nueva-sesion"){
+                ejecutarNuevaSesionConfirmada
+            }
         });
 
         btnNo.addEventListener("click", () => {
             modal.classList.remove("activo");
             idPaletaPorEliminar = null;
+            origenDelModal ="";
+
+            const parrafoModal = modal.querySelector("p");
+            if (parrafoModal){
+                parrafoModal.textContent = "¿Reallmente deseas eliminar esta Paleta de colores?";
+
+            }
         });
+    }
+
+    if (btnNuevaSesion){
+        btnNuevaSesion.addEventListener("click", nuevaSesion);
     }
 
     if (btnMostrarGuardadas) {
@@ -334,14 +378,17 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 });
-// ==========================================================================
-// TRUCO DE CONVERSIÓN DE FORMATOS EN TIEMPO REAL CON EL NAVEGADOR
-// ==========================================================================
+// Conservación de formatos
 
 function transformarFormatoActual() {
     if (!contenedor) return;
+    
     const tarjetas = [...contenedor.querySelectorAll(".color-card")];
     const nuevoFormato = selectFormato.value; // Lee si eligió "HEX" o "HSL"
+
+    // Guardar formato seleccionado
+    localStorage.setItem("formatoColor", nuevoFormato);
+
 
     tarjetas.forEach((tarjeta) => {
         // Obtenemos el color actual real que está pintado en el fondo de la tarjeta
@@ -414,9 +461,132 @@ function transformarFormatoActual() {
         guardarCandadosEnLocalStorage();
     }
 }
+function actualizarCantidadPaleta() {
+    if (!contenedor) return;
 
+    const cantidadNueva = parseInt(selectCantidad.value, 10);
 
+    const tarjetas = [...contenedor.querySelectorAll(".color-card")];
+
+    const coloresActuales = tarjetas.map(card => ({
+        color: card.dataset.color,
+        bloqueado: card.classList.contains("bloqueado")
+    }));
+
+    // Si aumenta la cantidad
+    while (coloresActuales.length < cantidadNueva) {
+        coloresActuales.push({
+            color: generarColor(),
+            bloqueado: false
+        });
+    }
+
+    // Si disminuye la cantidad
+    if (coloresActuales.length > cantidadNueva) {
+        coloresActuales.splice(cantidadNueva);
+    }
+
+    construirContenedorPaleta(coloresActuales);
+
+    // Mantener el formato actual (HEX o HSL)
+    transformarFormatoActual();
+
+    guardarCandadosEnLocalStorage();
+}
+function nuevaSesion() {
+    const modal = document.getElementById("modal-confirmacion");
+    if (!modal) return;
+
+    // REVISAR SI EL USUARIO YA MARCÓ ANTES "NO VOLVER A MOSTRAR"
+    const omitirPregunta = localStorage.getItem("omitirConfirmacionNuevaSesion") === "true";
+
+    if (omitirPregunta) {
+        ejecutarNuevaSesionConfirmada();
+        return;
+    }
+
+    // Cambiamos el texto del modal para esta acción
+    const parrafoModal = modal.querySelector("p");
+    if (parrafoModal) {
+        parrafoModal.textContent = "¿Deseas obtener una Nueva Paleta de Color? Se perderán los colores bloqueados actuales.";
+    }
+    
+    document.getElementById("chk-no-mostrar").checked = false; // Resetea el check
+    modal.classList.add("activo"); // Muestra el modal
+
+    // Le asignamos la función directamente al botón SÍ aquí mismo
+    // Esto borra cualquier interferencia de nombres o guiones
+    const btnSi = document.getElementById("btn-modal-si");
+    if (btnSi) {
+        // Clonamos el botón para borrar eventos viejos acumulados
+        const nuevoBtnSi = btnSi.cloneNode(true);
+        btnSi.parentNode.replaceChild(nuevoBtnSi, btnSi);
+        
+        // Le damos la orden directa e inmediata
+        nuevoBtnSi.addEventListener("click", () => {
+            modal.classList.remove("activo");
+            ejecutarNuevaSesionConfirmada();
+        });
+    }
+}
+
+// LOGICA DE REINICIO DE SESIÓN COMPLETA
+function ejecutarNuevaSesionConfirmada() {
+    // 1. Limpieza absoluta del almacenamiento
+    localStorage.removeItem("estadoBlockedActuales");
+    localStorage.removeItem("formatoColor");
+
+    // 2. Elegimos combinaciones aleatorias sorpresa (6, 8 o 9 / HEX o HSL)
+    const opcionesCantidad = ["6", "8", "9"];
+    const cantidadAleatoria = opcionesCantidad[Math.floor(Math.random() * opcionesCantidad.length)];
+    
+    const opcionesFormato = ["HEX", "HSL"];
+    const formatoAleatorio = opcionesFormato[Math.floor(Math.random() * opcionesFormato.length)];
+
+    // 3. Sincronizamos los selectores del HTML
+    if (selectCantidad) selectCantidad.value = cantidadAleatoria;
+    if (selectFormato) selectFormato.value = formatoAleatorio;
+
+    const cantidadNumerica = parseInt(cantidadAleatoria, 10);
+    const nuevosColoresLimpios = [];
+
+    // 4. Creamos los colores usando tus funciones aleatorias puras
+    for (let i = 0; i < cantidadNumerica; i++) {
+        let colorValue;
+        if (formatoAleatorio === "HEX") {
+            colorValue = getRandomHex(); // Invoca tu función nativa
+        } else {
+            colorValue = getRandomHSL(); // Invoca tu función nativa
+        }
+        
+        nuevosColoresLimpios.push({
+            color: colorValue,
+            bloqueado: false
+        });
+    }
+
+    // 5. Pintamos la pantalla de inmediato
+    if (typeof construirContenedorPaleta === "function") {
+        construirContenedorPaleta(nuevosColoresLimpios);
+    }
+
+    // 6. Guardamos el estado limpio en el disco
+    if (typeof guardarCandadosEnLocalStorage === "function") {
+        guardarCandadosEnLocalStorage();
+    }
+
+    // 7. Procesamos la casilla de verificación
+    const casillaCheck = document.getElementById("chk-no-mostrar");
+    if (casillaCheck && casillaCheck.checked) {
+        localStorage.setItem("omitirConfirmacionNuevaSesion", "true");
+    }
+
+    // 8. Mostramos el aviso flotante sin saltos
+    mostrarToast(`¡Nueva Paleta de ${cantidadAleatoria} colores generada!`);
+}
 btnGenerar.addEventListener("click", generarPaleta);
 btnGuardar.addEventListener("click", guardarPaleta);
 // Escucha cuando el usuario cambia de HEX a HSL o viceversa en el menú desplegable
 selectFormato.addEventListener("change", transformarFormatoActual);
+selectCantidad.addEventListener("change", actualizarCantidadPaleta); 
+btnNuevaSesion.addEventListener("click", nuevaSesion);
