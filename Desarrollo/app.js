@@ -13,7 +13,6 @@ const btnNuevaSesion = document.getElementById("btnNuevaSesion");
 
 let origenDelModal = ""; 
 
-
 function getRandomHex() {
     const letters = "0123456789ABCDEF";
     let color = "#";
@@ -140,37 +139,19 @@ function construirContenedorPaleta(arregloColores) {
         contenedor.appendChild(colorCard);
     });
 }
-
 function generarPaleta() {
-    if (!contenedor) return;
-
     const cantidad = parseInt(selectCantidad.value, 10);
-    const tarjetasAnteriores = [...contenedor.querySelectorAll(".color-card")];
 
-    const coloresBloqueados = tarjetasAnteriores.map((card) => {
-        return {
-            color: card.dataset.color,
-            bloqueado: card.classList.contains("bloqueado")
-        };
-    });
+    const nuevaPaleta =
+        obtenerPaletaRespetandoBloqueados(cantidad);
 
-    const nuevosColores = [];
+    construirContenedorPaleta(nuevaPaleta);
 
-    for (let i = 0; i < cantidad; i++) {
-        let colorValue;
-        if (coloresBloqueados[i] && coloresBloqueados[i].bloqueado) {
-            colorValue = coloresBloqueados[i].color;
-            nuevosColores.push({ color: colorValue, bloqueado: true });
-        } else {
-            colorValue = generarColor();
-            nuevosColores.push({ color: colorValue, bloqueado: false });
-        }
-    }
-
-    construirContenedorPaleta(nuevosColores);
     guardarCandadosEnLocalStorage();
+
     mostrarToast("¡Paleta Generada!");
 }
+
 
 // TOAST FLOTANTE OPTIMIZADO: (USA OPACIDAD, EVITA CUALQUIER SALTO DE ELEMENTOS)
 function mostrarToast(mensaje = "¡Paleta Generada!") {
@@ -184,7 +165,6 @@ function mostrarToast(mensaje = "¡Paleta Generada!") {
     toast.style.visibility = "visible";
 
     setTimeout(() => {
-        // Se desvanece en su lugar sin alterar los píxeles de los contenedores
         toast.style.opacity = "0";
         toast.style.visibility = "hidden";
     }, 1500);
@@ -464,34 +444,69 @@ function transformarFormatoActual() {
 function actualizarCantidadPaleta() {
     if (!contenedor) return;
 
-    const cantidadNueva = parseInt(selectCantidad.value, 10);
+    let cantidadNueva = parseInt(selectCantidad.value, 10);
 
     const tarjetas = [...contenedor.querySelectorAll(".color-card")];
 
-    const coloresActuales = tarjetas.map(card => ({
+    const estadoActual = tarjetas.map(card => ({
         color: card.dataset.color,
         bloqueado: card.classList.contains("bloqueado")
     }));
 
-    // Si aumenta la cantidad
-    while (coloresActuales.length < cantidadNueva) {
-        coloresActuales.push({
+    // Extraer TODOS los bloqueados
+    const bloqueados = estadoActual.filter(c => c.bloqueado);
+
+    // Nunca permitir que se pierdan bloqueados
+    if (bloqueados.length > cantidadNueva) {
+        cantidadNueva = bloqueados.length;
+        selectCantidad.value = cantidadNueva;
+
+        mostrarToast(
+            `Tienes ${bloqueados.length} colores bloqueados.`
+        );
+    }
+
+    const nuevaPaleta = [...bloqueados];
+
+    while (nuevaPaleta.length < cantidadNueva) {
+        nuevaPaleta.push({
             color: generarColor(),
             bloqueado: false
         });
     }
 
-    // Si disminuye la cantidad
-    if (coloresActuales.length > cantidadNueva) {
-        coloresActuales.splice(cantidadNueva);
-    }
+    construirContenedorPaleta(nuevaPaleta);
 
-    construirContenedorPaleta(coloresActuales);
-
-    // Mantener el formato actual (HEX o HSL)
     transformarFormatoActual();
 
     guardarCandadosEnLocalStorage();
+}
+function obtenerPaletaRespetandoBloqueados(cantidad) {
+
+    const tarjetas = [...contenedor.querySelectorAll(".color-card")];
+
+    const bloqueados = tarjetas
+        .filter(card => card.classList.contains("bloqueado"))
+        .map(card => ({
+            color: card.dataset.color,
+            bloqueado: true
+        }));
+
+    if (cantidad < bloqueados.length) {
+        cantidad = bloqueados.length;
+        selectCantidad.value = cantidad;
+    }
+
+    const resultado = [...bloqueados];
+
+    while (resultado.length < cantidad) {
+        resultado.push({
+            color: generarColor(),
+            bloqueado: false
+        });
+    }
+
+    return resultado;
 }
 function nuevaSesion() {
     const modal = document.getElementById("modal-confirmacion");
@@ -508,7 +523,7 @@ function nuevaSesion() {
     // Cambiamos el texto del modal para esta acción
     const parrafoModal = modal.querySelector("p");
     if (parrafoModal) {
-        parrafoModal.textContent = "¿Deseas obtener una Nueva Paleta de Color? Se perderán los colores bloqueados actuales.";
+        parrafoModal.textContent = "¿Deseas obtener una Nueva Paleta de Color? Se perderán los colores bloqueados actuales y paletas guardadas.";
     }
     
     document.getElementById("chk-no-mostrar").checked = false; // Resetea el check
@@ -532,57 +547,59 @@ function nuevaSesion() {
 
 // LOGICA DE REINICIO DE SESIÓN COMPLETA
 function ejecutarNuevaSesionConfirmada() {
-    // 1. Limpieza absoluta del almacenamiento
+
+    // Eliminar todo
     localStorage.removeItem("estadoBlockedActuales");
+
     localStorage.removeItem("formatoColor");
 
-    // 2. Elegimos combinaciones aleatorias sorpresa (6, 8 o 9 / HEX o HSL)
+    localStorage.removeItem("paletasGuardadas");
+
+    localStorage.removeItem("omitirConfirmacionBorrado");
+
+    // Limpiar lista visual
+    listaGuardadas.innerHTML = "";
+
+    listaGuardadas.classList.remove("abierto");
+
     const opcionesCantidad = ["6", "8", "9"];
-    const cantidadAleatoria = opcionesCantidad[Math.floor(Math.random() * opcionesCantidad.length)];
-    
+
+    const cantidadAleatoria =
+        opcionesCantidad[
+            Math.floor(Math.random() * opcionesCantidad.length)
+        ];
+
     const opcionesFormato = ["HEX", "HSL"];
-    const formatoAleatorio = opcionesFormato[Math.floor(Math.random() * opcionesFormato.length)];
 
-    // 3. Sincronizamos los selectores del HTML
-    if (selectCantidad) selectCantidad.value = cantidadAleatoria;
-    if (selectFormato) selectFormato.value = formatoAleatorio;
+    const formatoAleatorio =
+        opcionesFormato[
+            Math.floor(Math.random() * opcionesFormato.length)
+        ];
 
-    const cantidadNumerica = parseInt(cantidadAleatoria, 10);
-    const nuevosColoresLimpios = [];
+    selectCantidad.value = cantidadAleatoria;
 
-    // 4. Creamos los colores usando tus funciones aleatorias puras
-    for (let i = 0; i < cantidadNumerica; i++) {
-        let colorValue;
-        if (formatoAleatorio === "HEX") {
-            colorValue = getRandomHex(); // Invoca tu función nativa
-        } else {
-            colorValue = getRandomHSL(); // Invoca tu función nativa
-        }
-        
-        nuevosColoresLimpios.push({
-            color: colorValue,
+    selectFormato.value = formatoAleatorio;
+
+    const nuevosColores = [];
+
+    for (let i = 0; i < parseInt(cantidadAleatoria); i++) {
+
+        nuevosColores.push({
+            color:
+                formatoAleatorio === "HEX"
+                    ? getRandomHex()
+                    : getRandomHSL(),
+
             bloqueado: false
         });
+
     }
 
-    // 5. Pintamos la pantalla de inmediato
-    if (typeof construirContenedorPaleta === "function") {
-        construirContenedorPaleta(nuevosColoresLimpios);
-    }
+    construirContenedorPaleta(nuevosColores);
 
-    // 6. Guardamos el estado limpio en el disco
-    if (typeof guardarCandadosEnLocalStorage === "function") {
-        guardarCandadosEnLocalStorage();
-    }
+    guardarCandadosEnLocalStorage();
 
-    // 7. Procesamos la casilla de verificación
-    const casillaCheck = document.getElementById("chk-no-mostrar");
-    if (casillaCheck && casillaCheck.checked) {
-        localStorage.setItem("omitirConfirmacionNuevaSesion", "true");
-    }
-
-    // 8. Mostramos el aviso flotante sin saltos
-    mostrarToast(`¡Nueva Paleta de ${cantidadAleatoria} colores generada!`);
+    mostrarToast("¡Nueva Paleta creada!");
 }
 btnGenerar.addEventListener("click", generarPaleta);
 btnGuardar.addEventListener("click", guardarPaleta);

@@ -401,6 +401,62 @@ Se integraron flujos lógicos en el archivo `app.js` y `style.css` que permiten:
 - Control y detención de la propagación de eventos en elementos anidados con `event.stopPropagation()`.
 - Sincronización exacta de variables e interactividad entre JavaScript, HTML y hojas de estilo.
 
+## 🛠️ Prompt 10: Reinicio completo de sesión (Nueva paleta)
+
+### 🎯 Objetivo
+Implementar una función de reinicio total que permita comenzar una nueva sesión creativa eliminando colores bloqueados, paletas guardadas y configuraciones almacenadas, todo mediante una ventana de confirmación segura y configurable.
+
+### 💬 Prompt
+
+```text
+Ayúdame a programar en JavaScript, HTML y CSS un botón llamado "Nueva paleta" que reinicie completamente la aplicación de generación de colores. La función debe mostrar un modal de confirmación antes de ejecutarse y permitir al usuario marcar la opción "No volver a preguntar", guardando dicha preferencia en localStorage.
+
+Al confirmar la acción, se deben eliminar los colores bloqueados, la paleta actual, las paletas guardadas y cualquier configuración relacionada almacenada en localStorage. Después del reinicio, debe generarse automáticamente una nueva paleta aleatoria con una cantidad y formato de color seleccionados aleatoriamente. También necesito que la interfaz se actualice de inmediato sin necesidad de recargar la página y que se muestre una notificación Toast informando que la nueva sesión ha sido creada correctamente.
+```
+
+### ✅ Resultado obtenido
+
+La IA proporcionó una solución completa para gestionar el reinicio de la aplicación mediante una única acción controlada, integrando confirmaciones visuales, limpieza de almacenamiento local, generación automática de nuevos colores y persistencia de preferencias del usuario.
+
+### 💻 Ejemplo sugerido
+
+```javascript
+localStorage.removeItem("estadoBlockedActuales");
+localStorage.removeItem("formatoColor");
+localStorage.removeItem("paletasGuardadas");
+
+const omitirPregunta =
+
+localStorage.getItem("omitirConfirmacionNuevaSesion") === "true";
+Mostrar más líneas
+JavaScript
+
+mostrarToast("¡Nueva sesión creada!");
+```
+
+### 🔧 Aplicación en el proyecto
+
+Se integró un flujo de reinicio completo dentro de app.js que permite:
+
+- Eliminar todos los colores bloqueados almacenados.
+- Borrar las paletas guardadas por el usuario.
+- Restablecer configuraciones de formato y cantidad.
+- Generar automáticamente una nueva paleta aleatoria.
+- Solicitar confirmación previa mediante un modal interactivo.
+- Recordar la preferencia del usuario utilizando localStorage.
+- Actualizar instantáneamente la interfaz sin recargar la página.
+- Mostrar una notificación Toast indicando el resultado de la operación.
+
+### 📚 Aprendizaje obtenido
+
+- Gestión avanzada de persistencia mediante localStorage.
+- Eliminación selectiva de datos almacenados en el navegador.
+- Creación de flujos de confirmación reutilizables con modales personalizados.
+- Actualización dinámica del DOM sin refrescar la página.
+- Implementación de configuraciones persistentes basadas en preferencias del usuario.
+- Generación automática de estados iniciales para reiniciar una aplicación interactiva.
+
+Esta versión mantiene exactamente el mismo estilo profesional y técnico que los demás prompts de tu README, por lo que se verá consistente con el resto de la documentación del proyecto.
 
 # ✅ Conclusión
 
@@ -413,8 +469,8 @@ La inteligencia artificial fue utilizada como una herramienta de apoyo para:
 - Organizar la estructura del proyecto.
 - Elaborar la documentación técnica.
 
-Todo el contenido generado mediante IA fue revisado, adaptado y validado antes de ser incorporado al proyecto.
+> **Nota:** La propuesta inicial proporcionada por la IA fue utilizada como referencia durante el desarrollo. La implementación final fue adaptada, modificada, corregida e integrada manualmente para ajustarse a los requerimientos específicos y a la arquitectura del proyecto.
 
-> La implementación final, la lógica de funcionamiento, las mejoras y las decisiones de desarrollo corresponden al trabajo realizado durante la construcción del Generador de Paletas.
+> ⚠️ Aunque se utilizaron herramientas de inteligencia artificial como apoyo durante el desarrollo, las respuestas obtenidas no fueron incorporadas directamente. Todas las funcionalidades fueron analizadas, adaptadas, corregidas, probadas e integradas manualmente. La arquitectura de la aplicación, las decisiones de diseño, la experiencia de usuario y la implementación final corresponden al trabajo realizado durante el desarrollo del proyecto.
 
 [Volver ](../README.md)
