@@ -448,26 +448,33 @@ function actualizarCantidadPaleta() {
 
     const tarjetas = [...contenedor.querySelectorAll(".color-card")];
 
-    const estadoActual = tarjetas.map(card => ({
+    const coloresActuales = tarjetas.map(card => ({
         color: card.dataset.color,
         bloqueado: card.classList.contains("bloqueado")
     }));
 
-    // Extraer TODOS los bloqueados
-    const bloqueados = estadoActual.filter(c => c.bloqueado);
+    const bloqueados = coloresActuales.filter(c => c.bloqueado);
+    const desbloqueados = coloresActuales.filter(c => !c.bloqueado);
 
-    // Nunca permitir que se pierdan bloqueados
-    if (bloqueados.length > cantidadNueva) {
+    // Nunca perder bloqueados
+    if (cantidadNueva < bloqueados.length) {
         cantidadNueva = bloqueados.length;
         selectCantidad.value = cantidadNueva;
 
         mostrarToast(
-            `Tienes ${bloqueados.length} colores bloqueados.`
+            `No puedes usar menos de ${bloqueados.length} colores porque están bloqueados`
         );
     }
 
     const nuevaPaleta = [...bloqueados];
 
+    // Completar con los colores actuales desbloqueados
+    for (const color of desbloqueados) {
+        if (nuevaPaleta.length >= cantidadNueva) break;
+        nuevaPaleta.push(color);
+    }
+
+    // Si todavía faltan colores, generar nuevos
     while (nuevaPaleta.length < cantidadNueva) {
         nuevaPaleta.push({
             color: generarColor(),
@@ -476,9 +483,22 @@ function actualizarCantidadPaleta() {
     }
 
     construirContenedorPaleta(nuevaPaleta);
+    guardarCandadosEnLocalStorage();
+}
+function ordenarPaletaPorBloqueados() {
+    const tarjetas = [...contenedor.querySelectorAll(".color-card")];
 
-    transformarFormatoActual();
+    const colores = tarjetas.map(card => ({
+        color: card.dataset.color,
+        bloqueado: card.classList.contains("bloqueado")
+    }));
 
+    const ordenada = [
+        ...colores.filter(c => c.bloqueado),
+        ...colores.filter(c => !c.bloqueado)
+    ];
+
+    construirContenedorPaleta(ordenada);
     guardarCandadosEnLocalStorage();
 }
 function obtenerPaletaRespetandoBloqueados(cantidad) {
